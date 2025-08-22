@@ -1,0 +1,17 @@
+{
+  "name": "functions",
+  "description": "Serverless functions for hamishw.com using AWS lambda",
+  "scripts": {
+    "deploy": "serverless deploy --stage production",
+    "deploy:api": "serverless deploy function --function api --stage production",
+    "deploy:headers": "serverless deploy function --function headers --stage production"
+  },
+  "devDependencies": {
+    "eslint": "^8.21.0",
+    "eslint-plugin-promise": "^6.0.0"
+  },
+  "engines": {
+    "node": "14.19.1"
+  },
+  "private": true
+}

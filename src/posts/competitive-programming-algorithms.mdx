@@ -1,0 +1,115 @@
+---
+title: Competitive Programming Algorithms Every Beginner Must Know
+abstract: Master these algorithms to kickstart your CP journey
+date: '2022-02-19'
+banner: /static/modern-react-css-banner.jpg
+featured: true
+---
+
+If you are a coding enthusiast of any sort, you must know what competitive programming is. Competitive programming (famously abbreviated as CP) is just like any other eSport. CP is a mental sport in which you must code a problem presented to you while adhering to certain limits, also known as constraints. In a normal CP contest, you are given a number of questions that range through various difficulty levels, involving the use of various data structures, logic, and mathematics. Taking part in such contests not only increases your problem-solving skills but also increases logic building and the ability to think faster in complex problem statements.
+
+## What's the fuss all about?
+
+Becoming good at competitive programming requires you to have a stronghold on data structures and algorithms, as well as on a programming language of your choice. However, in spite of the great learning curve, it is not that you will become a professional in a day. It requires a lot of practice, and knowledge of certain algorithms to become a better CPer (if that is a word).
+
+Here’s a list of some of the pretty basic algorithms that you can have a look at. Do note that it is not necessarily a compulsion that you would not be able to succeed without the knowledge of these algorithms, however, in certain cases, you are required to optimize your solution to fit into the given constraints, and in that condition, these are definitely going to help you a lot.
+
+### Binary Search
+
+Binary Search is one of the most optimized searching algorithms that exist currently. If a given array or a collection of numbers is sorted, then given a key value, the binary search algorithm can find a result in approximately **O(log N)** time complexity. Binary Search is based on the _Decrease and Conquer_ algorithmic paradigm, in which a particular key is compared with the middle element of the (sorted) array. If the given key is greater than the middle element, the search is continued on that part of the array which is after mid, or vice versa. This process is repeated until an element is found or not found based on the condition.
+
+```cpp
+int binarySearch(int arr[], int l, int r, int x)
+{
+  if (r >= l) {
+    int mid = l + (r - l) / 2
+    if (arr[mid] == x)
+    return mid;
+    if (arr[mid] > x)
+    return binarySearch(arr, l, mid - 1, x);
+    return binarySearch(arr, mid + 1, r, x);
+  }
+  return -1;
+}
+```
+
+Although binary search might appear trivial at a glance, there are a variety of questions of varying difficulties that have been curated, the solution to which lies just by implementing binary search.
+
+### Binary Exponentiation
+
+Binary Exponentiation might sound intimidating to you when you hear it for the first time, however, it is not something that is so difficult. Binary exponentiation is one of the most important aspects of Number Theory (that is used a lot in CP), and many other derivations of concepts are based on it. Binary exponentiation is essentially used to calculate the exponent of two numbers, or in simpler words, to calculate a raise to the power of b. With this, you might ask, there is already a pow() function that exists in C++ (or any other programming language for that matter, depending on the syntax), why do I need to understand a whole new concept for it? Binary exponentiation follows the Divide and Conquer algorithmic paradigm.
+
+Well, it turns out, most such built-in pow() functions return a result in the double data type, and a double data type is bound to have precision errors if the number stored in it is large enough. That means, a double data type is capable of storing very large numbers (of the order 10²⁰ ~ 10 ^30 and higher), yet it is incapable of storing them correctly. As such, when you submit your code to an online judge, and if your program uses the pow() function, there is a possibility that your code might return incorrect results for large values of input involved. In such a case, you must avoid using the built-in function for this purpose.
+
+A recursive approach to binary exponentiation is as follows:
+
+```cpp
+int binary_exponentiation(int a, int b)
+{
+    if(b==0) return 1;
+    long long int value=binary_exponentiation(a,b/2);
+    if(b%2==0)
+    {
+        return value*value;
+    }
+    else
+    {
+        return a*value*value;
+    }
+}
+```
+
+This method avoids the precision errors that come along with floating-point data types
+
+### Bit Manipulations
+
+Taking reference from the classical jargon — “Computers understand nothing but 0s and 1s”. Well, the 0s and 1s referred to here are the bits of any number or input. The way in which we handle (or manipulate) the bits is what can be called bit manipulation.
+
+Bit manipulations involve modifying or operating on bits of a number to obtain a desired result. Several operators like AND (&), OR ( | ), NOT ( ! ), XOR ( {'^'}), Left Shift ( {'<<' }), Right Shift ( {'>>'} ) are used to perform such bit manipulations.
+
+Do you want to see a working example?
+
+How about you are given a situation where you have to check whether a number is odd or not? The basic approach that you would apply would be
+
+```cpp
+if(n%2 ! = 0) print(“ODD”);
+```
+
+(where n = the number in concern)
+
+With the help of bit manipulation, this code can also be written as:
+
+```cpp
+if(n&1) print(“ODD”);
+```
+
+Basically, this would check whether the rightmost bit of the number is 1 or not. If that is the case, then the number is odd. Performing this operation using bit manipulation is much faster than the traditional approach.
+
+### Sieve of Eratosthenes
+
+Sieve of Eratosthenes is essentially an algorithm that gives us all prime numbers up to a given number N in the most optimized way possible.
+
+It does so by iteratively marking as composite (i.e., not prime) the multiples of each prime, starting with the first prime number, 2. The multiples of a given prime are generated as a sequence of numbers starting from that prime, with a constant difference between them that is equal to that prime. This is the sieve’s key distinction from using trial division to sequentially test each candidate number for divisibility by each prime. Once all the multiples of each discovered prime have been marked as composites, the remaining unmarked numbers are primes.
+
+```cpp
+void SieveOfEratosthenes(int n)
+{
+    bool prime[n + 1];
+    memset(prime, true, sizeof(prime));
+    for (int p = 2; p * p <= n; p++)
+    {
+        if (prime[p] == true)
+        {
+             for (int i = p * p; i <= n; i += p)
+                 prime[i] = false;
+        }
+}
+for (int p = 2; p <= n; p++)
+if (prime[p])
+cout << p << " ";
+}
+```
+
+These are a few algorithms that you can research more about if you are about to enter the world of competitive programming. Do remember that there are other algorithms too, the knowledge of which you can gain as you proceed further in your journey.
+
+Competitive programming is a sport, and no sport is mastered in a single day. It requires constant effort and consistency throughout. Some people might find it difficult to cope with it, some might not, but as goes with every sport, sheer practice is the only way out! The progress here will be gradual, and you might face failure once or multiple times. Sometimes, you won’t be able to code a proper solution, and would not be even able to understand what the official solution even means to convey — but this is how you develop your problem-solving ability in order to become a better CPer in the time to come.
