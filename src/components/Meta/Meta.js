@@ -10,7 +10,7 @@ export const Meta = ({ title, description, prefix = name, ogImage = defaultOgIma
 
   return (
     <Head>
-      <title key="title">Hilman Ansoey - Portfolio</title>
+      <title key="title">Hilman Ansory - Portfolio</title>
       <meta key="description" name="description" content={description} />
       <meta name="author" content={name} />
 

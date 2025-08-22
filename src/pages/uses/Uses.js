@@ -28,7 +28,7 @@ export const Uses = () => {
         />
         <ProjectHeader
           title="Uses"
-          description="A somewhat comprehensive list of tools, apps, and more that I use on a daily basis to design and code things. And yeah, that is a Johnny Mnemonic GIF in the background."
+          description="A somewhat comprehensive list of tools, apps, and more that I use on a daily basis to  code things. And yeah, "
         />
 
         <ProjectSection padding="none" className={styles.section}>

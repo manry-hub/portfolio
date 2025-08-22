@@ -18,8 +18,7 @@ import { ScrollRestore } from '../layouts/App/ScrollRestore';
 
 export const AppContext = createContext({});
 
-const repoPrompt =
-  'P.S I know you are watching here. Here is a cute emoji for you as a reward: 🐱';
+const repoPrompt = 'holaa';
 
 const App = ({ Component, pageProps }) => {
   const [storedTheme] = useLocalStorage('theme', 'dark');

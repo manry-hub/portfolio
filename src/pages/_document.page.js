@@ -8,6 +8,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
+        <meta
+          name="google-site-verification"
+          content="tQx7otQsK1RUV10sA3aWRbZNzcewXF7AGnsWLuzc4E8"
+        />
 
         <link rel="manifest" href="/manifest.json" />
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
