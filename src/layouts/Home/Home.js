@@ -18,6 +18,7 @@ import { Profile } from 'layouts/Home/Profile';
 import { ProjectSummary } from 'layouts/Home/ProjectSummary';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Home.module.css';
+import { useAutoPlayOnScroll } from '../../hooks/useAutoPlayOnScroll';
 
 const disciplines = ['Software', 'Data'];
 
@@ -31,7 +32,7 @@ export const Home = () => {
   const projectFour = useRef();
 
   const details = useRef();
-
+  useAutoPlayOnScroll();
   useEffect(() => {
     const sections = [intro, projectOne, projectTwo, projectThree, projectFour, details];
 
