@@ -1,18 +1,16 @@
+import safedriveLarge from 'assets/Safedrive-start.jpg';
+import safedriveCamera from 'assets/safedrive-camera.jpg';
+import himasisLarge from 'assets/himasis-large.png';
+import tracktivLarge from 'assets/tracktiv-large.png';
 import gamestackTexture2Placeholder from 'assets/gamestack-list-placeholder.jpg';
 
 import gamestackTexturePlaceholder from 'assets/gamestack-login-placeholder.jpg';
 
-import sliceTexturePlaceholder from 'assets/slice-app-placeholder.jpg';
-
 import sprTexturePlaceholder from 'assets/spr-lesson-builder-dark-placeholder.jpg';
 
-import hmsPreview from 'assets/hms-preview.png';
-import cicd from 'assets/cicd.png';
-import algoVE from 'assets/algo-ve-preview.png';
-import blockchain from 'assets/blockchain.png';
-import algoVE2 from 'assets/algoVE2.png';
-import stockDash from 'assets/stock-dashboard.png';
-import stockDash2 from 'assets/stockDash2.png';
+import chickenOrder from 'assets/ayam-potong-view.png';
+import chickenBox from 'assets/ayam-potong-box.png';
+
 import { Footer } from 'components/Footer';
 import { Meta } from 'components/Meta';
 import { Intro } from 'layouts/Home/Intro';
@@ -30,10 +28,12 @@ export const Home = () => {
   const projectOne = useRef();
   const projectTwo = useRef();
   const projectThree = useRef();
+  const projectFour = useRef();
+
   const details = useRef();
 
   useEffect(() => {
-    const sections = [intro, projectOne, projectTwo, projectThree, details];
+    const sections = [intro, projectOne, projectTwo, projectThree, projectFour, details];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -85,16 +85,16 @@ export const Home = () => {
         sectionRef={projectOne}
         visible={visibleSections.includes(projectOne.current)}
         index={1}
-        title="Hostel Management System"
-        description="A platform for students to address all their hostel issues with their hostel warden"
+        title="hacktiv8 course path"
+        description="Build a platform to help customer make a decission for buying course in hacktiv8 with AI Assistence from IBM Granite"
         buttonText="View project"
-        buttonLink="https://github.com/mayankjain25/Hostel-Management-System"
+        buttonLink="https://github.com/manry-hub/Tracktiv8"
         model={{
           type: 'laptop',
           alt: 'Displaying the home page of the website.',
           textures: [
             {
-              srcSet: [hmsPreview, hmsPreview],
+              srcSet: [tracktivLarge, tracktivLarge],
               placeholder: sprTexturePlaceholder,
             },
           ],
@@ -106,20 +106,20 @@ export const Home = () => {
         sectionRef={projectTwo}
         visible={visibleSections.includes(projectTwo.current)}
         index={2}
-        title="Stocks Dashboard"
-        description="A dashboard to display some of the top performing stocks in the Indian market"
-        buttonText="View website"
-        buttonLink="http://stock-dashboard.kiitians.com/"
+        title="Driver Safety Detection"
+        description="design and development app to help driver safety with React Native"
+        buttonText="View Project"
+        buttonLink="https://github.com/manry-hub/SafeDrive"
         model={{
           type: 'phone',
           alt: 'App login screen',
           textures: [
             {
-              srcSet: [stockDash],
+              srcSet: [safedriveCamera],
               placeholder: gamestackTexturePlaceholder,
             },
             {
-              srcSet: [stockDash2],
+              srcSet: [safedriveLarge],
               placeholder: gamestackTexture2Placeholder,
             },
           ],
@@ -131,16 +131,41 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Blockchain Based FIR Registration System"
-        description="A blockchain based FIR registration system to ensure transparency and security of the data to facilitate and safeguard the interests of the victim."
-        buttonText="Visit repository"
-        buttonLink="https://github.com/mayankjain25/Blockchain-Based-FIR-System"
+        title="Organization Profile"
+        description="Improve the UI and UX appearance of the old Himasis website and develop it regularly"
+        buttonText="View Project"
+        buttonLink="https://github.com/manry-hub/himasis.org"
         model={{
           type: 'laptop',
           alt: 'landing page',
           textures: [
             {
-              srcSet: [blockchain],
+              srcSet: [himasisLarge],
+              placeholder: gamestackTexturePlaceholder,
+            },
+          ],
+        }}
+      />
+      <ProjectSummary
+        id="project-4"
+        alternate
+        sectionRef={projectFour}
+        visible={visibleSections.includes(projectFour.current)}
+        index={4}
+        title="Chicken Distributor Ordering"
+        description="design and development e-commerce app to make selling chickens to the right target with html css js and PWA"
+        buttonText="View Website"
+        buttonLink="https://web-distributor-ordering.vercel.app"
+        model={{
+          type: 'phone',
+          alt: 'App login screen',
+          textures: [
+            {
+              srcSet: [chickenBox],
+              placeholder: gamestackTexture2Placeholder,
+            },
+            {
+              srcSet: [chickenOrder],
               placeholder: gamestackTexturePlaceholder,
             },
           ],

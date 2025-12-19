@@ -19,6 +19,11 @@ export const navLinks = [
 ];
 
 export const socialLinks = [
+  // {
+  //   label: 'Spotify',
+  //   url: `https://open.spotify.com/user/31jva75tq4nziw65avn7xgv3b73q`,
+  //   icon: 'ri-spotify-fill',
+  // },
   {
     label: 'Github',
     url: 'https://github.com/manry-hub',
@@ -30,4 +35,9 @@ export const socialLinks = [
     url: 'https://www.linkedin.com/in/hilmansory/',
     icon: 'linkedin',
   },
+  // {
+  //   label: 'Instagram',
+  //   url: `https://www.instagram.com/mdhilmansorry`,
+  //   icon: 'ri-instagram-fill',
+  // },
 ];

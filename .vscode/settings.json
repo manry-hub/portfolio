@@ -3,13 +3,17 @@
   "eslint.validate": ["javascript", "javascriptreact"],
   "eslint.workingDirectories": ["./src", "./functions"],
   "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
     "**/.DS_Store": true,
-    "**/.git": true
+    "**/Thumbs.db": true
   },
   "html.format.enable": false,
   "search.exclude": {
     "**/node_modules": true,
     "**/build": true
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "hide-files.files": []
 }

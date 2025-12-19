@@ -77,12 +77,11 @@ export const Uses = () => {
                     <TableCell>Debian Linux and Windows (dualboot)</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableHeadCell>IDE</TableHeadCell>
-                    <TableCell>Vs Code, Netbeans, Collab</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHeadCell>DBMS Studio</TableHeadCell>
-                    <TableCell>Datagrip</TableCell>
+                    <TableHeadCell>Tools</TableHeadCell>
+                    <TableCell>
+                      Vs Code, Intellij Idea, Collab, Datagrip, Sparx Architecture
+                      Enterprise
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
