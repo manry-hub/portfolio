@@ -38,7 +38,7 @@ export const socialLinks = [
   {
     label: 'Instagram',
 
-    url: 'https://www.instagram.com/mdhilmansorry',
+    url: 'https://www.instagram.com/md.hilmansorry',
     icon: 'Instagram',
   },
   {
