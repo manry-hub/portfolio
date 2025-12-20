@@ -12,8 +12,6 @@ import { Transition } from 'components/Transition';
 import { Fragment, useState } from 'react';
 import { media } from 'utils/style';
 import styles from './Profile.module.css';
-
-import profileImgLarge from 'assets/profile-large.jpg';
 import profileImg from 'assets/profile.jpg';
 
 const ProfileText = ({ visible, titleId }) => (
@@ -21,10 +19,7 @@ const ProfileText = ({ visible, titleId }) => (
     <Heading className={styles.title} data-visible={visible} level={3} id={titleId}>
       <DecoderText text="Hi there" start={visible} delay={500} />
     </Heading>
-    {/* I’m Hilman,with a passion for creating dynamic and user-friendly websites. Currently
-      focused on building skills in <Link>software engineering</Link>, I am experienced
-      with technologies like Express, Next js, Laravel, etc. Although my main focus is on
-      software engineering. */}
+
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       I’m Hilman,with a passion for creating dynamic and user-friendly websites. Currently
       focused on building skills in{' '}
@@ -34,14 +29,11 @@ const ProfileText = ({ visible, titleId }) => (
       , I am experienced with technologies like <b>Express, Next js, Spring, etc. </b>
       Although my main focus is on software engineering.
     </Text>
-    {/*  I still have a strong interest in <Link>data engineering </Link>and enjoy
-      integrating data-driven insights into my projects. I thrive in collaborative
-      environments, always eager to learn new skills, and excited to contribute to
-      innovative web development projects. */}
+
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       I still have a strong interest in{' '}
       <Link href="https://open.spotify.com/user/31jva75tq4nziw65avn7xgv3b73q">
-        data engineering{' '}
+        database engineering{' '}
       </Link>
       and enjoy integrating data-driven insights into my projects. I thrive in
       collaborative environments, always eager to learn new skills, and excited to
