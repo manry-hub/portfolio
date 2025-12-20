@@ -18,7 +18,7 @@ import { Profile } from 'layouts/Home/Profile';
 import { ProjectSummary } from 'layouts/Home/ProjectSummary';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Home.module.css';
-import { useAutoPlayOnScroll } from '../../hooks/useAutoPlayOnScroll';
+import { usePlayAudio } from '../../hooks/usePlayAudio';
 import LoadingScreen from 'components/LoadingScreen';
 
 const disciplines = ['Software', 'Data'];
@@ -34,7 +34,7 @@ export const Home = () => {
   const details = useRef();
 
   const [loaded, setLoaded] = useState(false);
-  const { play } = useAutoPlayOnScroll();
+  const { play } = usePlayAudio();
 
   const handleStart = () => {
     play(); // ✅ gesture valid

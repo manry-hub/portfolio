@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export function useAutoPlayOnScroll() {
+export function usePlayAudio() {
   const audioRef = useRef(null);
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+/* Mode default: dark */
 .overlay {
   position: fixed;
   inset: 0;
@@ -11,12 +12,13 @@
 
 .content {
   text-align: center;
+  color: #f0f0f0; /* default text color untuk dark mode */
 }
 
 .content h1 {
   font-size: 3rem;
   margin-bottom: 0.5rem;
-  margin-top: 4rem;
+  margin-top: 5rem;
 }
 
 .content p {
@@ -27,7 +29,43 @@
 .content button {
   padding: 0.8rem 2rem;
   font-size: 1rem;
+  color: aqua;
   border-radius: 999px;
   border: none;
   cursor: pointer;
+}
+.content button:hover {
+  color: white;
+}
+
+/* --- Light mode --- */
+.light .overlay {
+  background: #f5f5f5;
+}
+
+.light .content {
+  color: #0a0a0a;
+}
+
+.light .content button {
+  color: #0077ff;
+}
+.light .content button:hover {
+  color: #005bbb;
+}
+
+/* --- Dark mode --- */
+.dark .overlay {
+  background: #0a0a0a;
+}
+
+.dark .content {
+  color: #f0f0f0;
+}
+
+.dark .content button {
+  color: aqua;
+}
+.dark .content button:hover {
+  color: white;
 }
