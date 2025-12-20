@@ -6,7 +6,7 @@ export const Footer = ({ className }) => (
   <footer className={classes(styles.footer, className)}>
     <Text size="s" align="center" style={{ display: 'flex', alignItems: 'center' }}>
       <span className={styles.date}></span>
-      <span> Built with inspired by Hamish Williams.</span>
+      <span> Built with Next Js</span>
     </Text>
   </footer>
 );

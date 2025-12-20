@@ -19,6 +19,7 @@ import { ProjectSummary } from 'layouts/Home/ProjectSummary';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Home.module.css';
 import { useAutoPlayOnScroll } from '../../hooks/useAutoPlayOnScroll';
+import LoadingScreen from 'components/LoadingScreen';
 
 const disciplines = ['Software', 'Data'];
 
@@ -30,9 +31,15 @@ export const Home = () => {
   const projectTwo = useRef();
   const projectThree = useRef();
   const projectFour = useRef();
-
   const details = useRef();
-  useAutoPlayOnScroll();
+
+  const [loaded, setLoaded] = useState(false);
+  const { play } = useAutoPlayOnScroll();
+
+  const handleStart = () => {
+    play(); // ✅ gesture valid
+    setLoaded(true); // hilangkan loading screen
+  };
   useEffect(() => {
     const sections = [intro, projectOne, projectTwo, projectThree, projectFour, details];
 
@@ -71,6 +78,8 @@ export const Home = () => {
 
   return (
     <div className={styles.home}>
+      {!loaded && <LoadingScreen onStart={handleStart} />}
+
       <Meta
         title="Designer + Developer"
         description="Design portfolio of Hilman Ansory"
