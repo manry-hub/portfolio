@@ -21,7 +21,7 @@ import styles from './Home.module.css';
 import { usePlayAudio } from '../../hooks/usePlayAudio';
 import LoadingScreen from 'components/LoadingScreen';
 
-const disciplines = ['Software', 'Database'];
+const disciplines = ['Engineer', 'Developer', 'Architect', 'Analyst'];
 
 export const Home = () => {
   const [visibleSections, setVisibleSections] = useState([]);
