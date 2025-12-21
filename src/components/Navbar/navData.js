@@ -3,15 +3,14 @@ export const navLinks = [
     label: 'Projects',
     pathname: '/#project-1',
   },
-  // {
-  //   label: 'Experience',
-  //   pathname: '/experience',
-  // },
+  {
+    label: 'Resume',
+    pathname: '/resume',
+  },
   {
     label: 'Uses',
     pathname: '/uses',
   },
-
   {
     label: 'Contact',
     pathname: '/contact',
