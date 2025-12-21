@@ -33,7 +33,7 @@ const ProfileText = ({ visible, titleId }) => (
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       I still have a strong interest in{' '}
       <Link href="https://open.spotify.com/user/31jva75tq4nziw65avn7xgv3b73q">
-        database engineering{' '}
+        data engineering{' '}
       </Link>
       and enjoy integrating data-driven insights into my projects. I thrive in
       collaborative environments, always eager to learn new skills, and excited to
