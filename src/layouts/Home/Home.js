@@ -144,7 +144,7 @@ export const Home = () => {
         title="Organization Profile"
         description="Improve the UI and UX appearance of the old Himasis website and develop it regularly"
         buttonText="View Project"
-        buttonLink="https://github.com/manry-hub/himasis.org"
+        buttonLink="https://himasis.org/"
         model={{
           type: 'laptop',
           alt: 'landing page',
