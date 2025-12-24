@@ -6,6 +6,7 @@ import styles from './GlobalAudio.module.css';
 const TIME_KEY = 'bg-music-time';
 const PLAY_KEY = 'bg-music-playing';
 const UNLOCK_KEY = 'bg-audio-unlocked';
+const CAMPAIGN_KEY = 'campaign-popup-shown';
 
 const FADE_DURATION = 500;
 const START_DELAY = 1000;
@@ -192,6 +193,25 @@ export default function GlobalAudio() {
       window.removeEventListener('beforeunload', handleUnload);
     };
   }, []);
+
+  /* =======================
+     FORCE POPUP IF UTM
+  ======================= */
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const isFromCampaign =
+      router.query.utm_source || router.query.utm_medium || router.query.utm_content;
+
+    const alreadyShown = sessionStorage.getItem(CAMPAIGN_KEY);
+
+    if (isFromCampaign && !alreadyShown) {
+      sessionStorage.setItem(CAMPAIGN_KEY, 'true');
+      sessionStorage.removeItem(UNLOCK_KEY);
+      sessionStorage.removeItem(PLAY_KEY);
+      setUnlocked(false);
+    }
+  }, [router.isReady, router.query]);
 
   return (
     <>
