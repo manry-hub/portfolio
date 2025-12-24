@@ -42,7 +42,8 @@ export const Uses = () => {
                     Javascript library of choice. The component-centric mental model is
                     the first thing that truly made sense to me as a designer. and if I
                     use react, I will definitely use{' '}
-                    <Link href="https://nextjs.org/"> Next js.</Link>
+                    <Link href="https://nextjs.org/"> Next js</Link> or{' '}
+                    <Link href="https://vite.dev/"> Vite.</Link>
                   </ListItem>
                   <ListItem>
                     <Link href="https://expressjs.com/">Express </Link> is my backend
@@ -55,9 +56,8 @@ export const Uses = () => {
                     I’m also comfortable working with{' '}
                     <Link href="https://spring.io/">Spring</Link> for enterprise Java
                     applications,<Link href="https://laravel.com/"> Laravel</Link> for
-                    PHP-based systems, and{' '}
-                    <Link href="https://flask.palletsprojects.com/">Golang</Link> for best
-                    performance services. These give me the versatility to adapt to
+                    PHP-based systems, and <Link href="https://go.dev/">Golang</Link> for
+                    best performance services. These give me the versatility to adapt to
                     different project requirements
                   </ListItem>
                 </List>
@@ -69,7 +69,7 @@ export const Uses = () => {
         <ProjectSection padding="none" className={styles.section}>
           <ProjectSectionContent>
             <ProjectTextRow stretch width="m">
-              <ProjectSectionHeading>System</ProjectSectionHeading>
+              <ProjectSectionHeading>My Setup</ProjectSectionHeading>
               <Table>
                 <TableBody>
                   <TableRow>
@@ -77,11 +77,19 @@ export const Uses = () => {
                     <TableCell>Debian Linux and Windows (dualboot)</TableCell>
                   </TableRow>
                   <TableRow>
+                    <TableHeadCell>Design Architecture</TableHeadCell>
+                    <TableCell>Clean, Layered, Monolith, Microservice</TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableHeadCell>Tools</TableHeadCell>
                     <TableCell>
                       Vs Code, Intellij Idea, Collab, Datagrip, Sparx Architecture
                       Enterprise, and Docker
                     </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableHeadCell>DBMS</TableHeadCell>
+                    <TableCell>PostgreSql, MySql, MongoDb</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

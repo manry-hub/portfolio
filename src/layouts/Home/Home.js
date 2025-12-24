@@ -152,7 +152,7 @@ export const Home = () => {
         visible={visibleSections.includes(projectFour.current)}
         index={4}
         title="Chicken Distributor Ordering"
-        description="design and development e-commerce app to make selling chickens to the right target with html css js and PWA"
+        description="design and development e-commerce app to make selling chickens to the right target just with html css js and PWA"
         buttonText="View Website"
         buttonLink="https://web-distributor-ordering.vercel.app"
         model={{

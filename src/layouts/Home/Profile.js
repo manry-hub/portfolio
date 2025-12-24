@@ -23,16 +23,16 @@ const ProfileText = ({ visible, titleId }) => (
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       I’m Hilman, with a passion for creating dynamic and user-friendly websites.
       Currently focused on building skills in{' '}
-      <Link href="https://roadmap.sh/full-stack">software engineering</Link>, I am
-      experienced with technologies like <b>Express, Next js, Spring, Laravel, etc. </b>
-      Although my main focus is on software engineering.
+      <Link href="https://roadmap.sh/full-stack">software engineering</Link>, I enjoy
+      breaking down complex problems into <b>clear</b>, actionable solutions, thats what
+      brings me happy to do it.
     </Text>
 
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       I still have a strong interest in{' '}
       <Link href="https://roadmap.sh/data-engineer">data engineering </Link>
       and enjoy integrating data-driven insights into my projects. I thrive in
-      collaborative environments, always eager to learn new skills, and excited to
+      <b> collaborative environments</b>, always eager to learn new skills, and excited to
       contribute to innovative web development projects.
     </Text>
   </Fragment>
