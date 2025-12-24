@@ -48,6 +48,7 @@ const Overlay = styled.div`
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.5s ease forwards;
+  animation: fadeOut 0.5s ease forwards;
 `;
 
 /* =======================

@@ -30,7 +30,6 @@ const App = ({ Component, pageProps }) => {
   useFoucFix();
   const GlobalAudio = dynamic(() => import('components/GlobalAudio'), { ssr: false });
 
-  // Handle analytics pageview recording
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') return;
 

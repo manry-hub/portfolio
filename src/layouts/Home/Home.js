@@ -18,18 +18,12 @@ import { Profile } from 'layouts/Home/Profile';
 import { ProjectSummary } from 'layouts/Home/ProjectSummary';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Home.module.css';
-// import { usePlayAudio } from '../../hooks/usePlayAudio';
-// import LoadingScreen from 'components/LoadingScreen';
-// // import GlobalAudio from 'components/GlobalAudio';
-// import { useContext } from 'react';
-// import { AudioContext } from '../../pages/_app.page';
 
 const disciplines = ['Engineer', 'Architect'];
 
 export const Home = () => {
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
-  // const { setAudioAllowed } = useContext(AudioContext);
   const intro = useRef();
   const projectOne = useRef();
   const projectTwo = useRef();
@@ -37,13 +31,6 @@ export const Home = () => {
   const projectFour = useRef();
   const details = useRef();
 
-  // const [loaded, setLoaded] = useState(false);
-  // const { play } = usePlayAudio();
-
-  // const handleStart = () => {
-  //   setAudioAllowed(true); // 🎵 trigger audio
-  //   setLoaded(true); // ❌ hilangkan loading screen
-  // };
   useEffect(() => {
     const sections = [intro, projectOne, projectTwo, projectThree, projectFour, details];
 
@@ -82,10 +69,6 @@ export const Home = () => {
 
   return (
     <div className={styles.home}>
-      {/* {!loaded && <LoadingScreen onStart={handleStart} />} */}
-
-      {/* <GlobalAudio allowPlay={loaded} /> */}
-
       <Meta
         title="Software Enthusiast"
         description="Portfolio website of Hilman Ansory"
