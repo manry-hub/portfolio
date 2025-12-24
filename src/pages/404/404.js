@@ -70,11 +70,11 @@ export function Page404() {
               <a
                 className={styles.credit}
                 data-visible={visible}
-                href="https://www.imdb.com/title/tt0113568/"
+                href="https://www.imdb.com/title/tt7441658/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Animation from Ghost in the Shell (1995)
+                Animation from Black Clover (2017)
               </a>
             </div>
           </Fragment>

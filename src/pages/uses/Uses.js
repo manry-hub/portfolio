@@ -80,7 +80,7 @@ export const Uses = () => {
                     <TableHeadCell>Tools</TableHeadCell>
                     <TableCell>
                       Vs Code, Intellij Idea, Collab, Datagrip, Sparx Architecture
-                      Enterprise
+                      Enterprise, and Docker
                     </TableCell>
                   </TableRow>
                 </TableBody>

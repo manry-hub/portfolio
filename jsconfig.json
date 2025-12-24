@@ -3,5 +3,5 @@
     "baseUrl": "src",
     "module": "commonjs"
   },
-  "include": ["src", ".storybook/StoryContainer.js"]
+  "include": ["src", ".storybook/StoryContainer.js", "src/pages/resume/index.page.js", "src/pages/resume/Resume.js"]
 }

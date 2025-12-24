@@ -15,6 +15,8 @@ import { useRouter } from 'next/router';
 import { Fragment, createContext, useEffect, useReducer } from 'react';
 import { msToNum } from 'utils/style';
 import { ScrollRestore } from '../layouts/App/ScrollRestore';
+// import GlobalAudio from 'components/GlobalAudio';
+import dynamic from 'next/dynamic';
 
 export const AppContext = createContext({});
 
@@ -26,6 +28,7 @@ const App = ({ Component, pageProps }) => {
   const { route, events, asPath } = useRouter();
   const canonicalRoute = route === '/' ? '' : `${asPath}`;
   useFoucFix();
+  const GlobalAudio = dynamic(() => import('components/GlobalAudio'), { ssr: false });
 
   // Handle analytics pageview recording
   useEffect(() => {
@@ -67,6 +70,7 @@ const App = ({ Component, pageProps }) => {
                 href={`${process.env.NEXT_PUBLIC_WEBSITE_URL}${canonicalRoute}`}
               />
             </Head>
+            <GlobalAudio />
             <VisuallyHidden
               showOnFocus
               as="a"
