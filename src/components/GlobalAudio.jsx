@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import styles from './LoadingScreen.module.css';
+import styles from './GlobalAudio.module.css';
 
 const TIME_KEY = 'bg-music-time';
 const PLAY_KEY = 'bg-music-playing';
