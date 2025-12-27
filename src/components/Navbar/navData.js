@@ -4,12 +4,12 @@ export const navLinks = [
     pathname: '/#project-1',
   },
   {
-    label: 'Resume',
-    pathname: '/resume',
+    label: 'Environtment',
+    pathname: '/environtment',
   },
   {
-    label: 'Uses',
-    pathname: '/uses',
+    label: 'Resume',
+    pathname: '/resume',
   },
   {
     label: 'Contact',

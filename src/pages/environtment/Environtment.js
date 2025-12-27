@@ -17,7 +17,7 @@ import {
 
 import styles from './uses.module.css';
 
-export const Uses = () => {
+export const Environtment = () => {
   return (
     <>
       <ProjectContainer className={styles.uses}>
@@ -27,7 +27,7 @@ export const Uses = () => {
           opacity={0.7}
         />
         <ProjectHeader
-          title="Uses"
+          title="Environtment"
           description="A somewhat comprehensive list of tools, apps, and more that I use on a daily basis to  code things. And yeah, "
         />
 
@@ -54,11 +54,13 @@ export const Uses = () => {
                   </ListItem>
                   <ListItem>
                     I’m also comfortable working with{' '}
-                    <Link href="https://spring.io/">Spring</Link> for enterprise Java
-                    applications,<Link href="https://laravel.com/"> Laravel</Link> for
-                    PHP-based systems, and <Link href="https://go.dev/">Golang</Link> for
-                    best performance services. These give me the versatility to adapt to
-                    different project requirements
+                    <Link href="https://spring.io/">Spring</Link> for building resilient,
+                    enterprise-scale Java systems,{' '}
+                    <Link href="https://laravel.com/">Laravel</Link> for well-structured
+                    and developer-friendly PHP applications, and{' '}
+                    <Link href="https://www.djangoproject.com/">Django</Link> for robust
+                    and security-first Python web applications. These give me the
+                    versatility to adapt to different project requirements
                   </ListItem>
                 </List>
               </ProjectSectionText>
@@ -76,20 +78,20 @@ export const Uses = () => {
                     <TableHeadCell>Operating system</TableHeadCell>
                     <TableCell>Debian Linux and Windows (dualboot)</TableCell>
                   </TableRow>
-                  <TableRow>
+                  {/* <TableRow>
                     <TableHeadCell>Design Architecture</TableHeadCell>
                     <TableCell>Clean, Layered, Monolith, Microservice</TableCell>
-                  </TableRow>
+                  </TableRow> */}
                   <TableRow>
                     <TableHeadCell>Tools</TableHeadCell>
                     <TableCell>
-                      Vs Code, Intellij Idea, Collab, Datagrip, Sparx Architecture
-                      Enterprise, and Docker
+                      Antigravity, Intellij Idea, Collab, Datagrip, Sparx Architecture
+                      Enterprise, etc.
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableHeadCell>DBMS</TableHeadCell>
-                    <TableCell>PostgreSql, MySql, MongoDb</TableCell>
+                    <TableCell>PostgreSQL, MySQL, SQL Server, MongoDB, etc. </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

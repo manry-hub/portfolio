@@ -24,16 +24,15 @@ const ProfileText = ({ visible, titleId }) => (
       I’m Hilman, with a passion for creating dynamic and user-friendly websites.
       Currently focused on building skills in{' '}
       <Link href="https://roadmap.sh/full-stack">software engineering</Link>, I enjoy
-      breaking down complex problems into <b>clear</b>, actionable solutions, thats what
-      brings me happy to do it.
+      breaking down complex problems into clear, actionable solutions, thats what brings
+      me happy to do it.
     </Text>
 
     <Text className={styles.description} data-visible={visible} size="l" as="p">
-      I still have a strong interest in{' '}
-      <Link href="https://roadmap.sh/data-engineer">data engineering </Link>
-      and enjoy integrating data-driven insights into my projects. I thrive in
-      <b> collaborative environments</b>, always eager to learn new skills, and excited to
-      contribute to innovative web development projects.
+      I have hands-on experience developing modern web applications and integrating
+      <b> cross-platform data systems</b>. Beyond coding, I also work on automating
+      business processes and <b>modernizing enterprise systems</b> to deliver real impact
+      across organizations.
     </Text>
   </Fragment>
 );
