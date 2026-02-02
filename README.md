@@ -1,6 +1,6 @@
 # Personal portfolio
 
-[![Site preview](/public/site-preview.png)](https://manry.netlify.app)
+[![Site preview](/public/site-preview.png)](https://manry.is-a.dev)
 
 This is my personal portfolio website to showcase some of my projects as well as my interests.
 
@@ -39,12 +39,3 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 Thank you for visiting my personal portfolio website! I hope you find it informative and enjoyable. If you have any questions or feedback, please don't hesitate to reach out.
-// TODO:
-
-Section Experience
-
-- "I have contributed to a variety of projects in backend system development, API integration, and enterprise digital transformation. From building secure and scalable applications to managing data pipelines and automating workflows, my experience spans across full stack development, DevOps, and data engineering. Here are some highlights from my professional journey:"
-
-Section Software Architecture Patterns
-
--

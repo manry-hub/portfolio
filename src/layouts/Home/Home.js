@@ -1,6 +1,7 @@
 import safedriveLarge from 'assets/Safedrive-start.jpg';
 import safedriveCamera from 'assets/safedrive-camera.jpg';
 import himasisLarge from 'assets/himasis-large.png';
+import omahkopiLarge from 'assets/omah-kopi.png';
 import tracktivLarge from 'assets/tracktiv-large.png';
 import gamestackTexture2Placeholder from 'assets/gamestack-list-placeholder.jpg';
 
@@ -29,10 +30,19 @@ export const Home = () => {
   const projectTwo = useRef();
   const projectThree = useRef();
   const projectFour = useRef();
+  const projectFive = useRef();
   const details = useRef();
 
   useEffect(() => {
-    const sections = [intro, projectOne, projectTwo, projectThree, projectFour, details];
+    const sections = [
+      intro,
+      projectOne,
+      projectTwo,
+      projectThree,
+      projectFour,
+      projectFive,
+      details,
+    ];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -130,8 +140,8 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Organization Profile"
-        description="Improve the UI and UX appearance of the old Himasis website and develop it regularly"
+        title="Article Website"
+        description="Improve the UI and UX appearance of the old Organization website and develop it regularly"
         buttonText="View Project"
         buttonLink="https://himasis.org/"
         model={{
@@ -145,6 +155,7 @@ export const Home = () => {
           ],
         }}
       />
+
       <ProjectSummary
         id="project-4"
         alternate
@@ -170,7 +181,27 @@ export const Home = () => {
           ],
         }}
       />
-
+      <ProjectSummary
+        id="project-5"
+        // alternate
+        sectionRef={projectFive}
+        visible={visibleSections.includes(projectFive.current)}
+        index={5}
+        title="Landing Page & SEO Optimization"
+        description="Build a fast, modern, and SEO-optimized company profile landing page using Astro JS for better performance."
+        buttonText="View Website"
+        buttonLink="https://omahkopi78.com"
+        model={{
+          type: 'laptop',
+          alt: 'landing page',
+          textures: [
+            {
+              srcSet: [omahkopiLarge],
+              placeholder: gamestackTexturePlaceholder,
+            },
+          ],
+        }}
+      />
       <Profile
         sectionRef={details}
         visible={visibleSections.includes(details.current)}
