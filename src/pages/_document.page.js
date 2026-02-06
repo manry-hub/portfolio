@@ -10,7 +10,7 @@ export default function Document() {
         <meta charSet="utf-8" />
         <meta
           name="google-site-verification"
-          content="OxGSL4QDUPQ7qCWvt9SjX-7th4IIULJ783aHz5THBOo"
+          content="R6U_EtaM9FcsncgihrrQDKQXQhUM2saLcjo1f3UYv9g"
         />
 
         <link rel="manifest" href="/manifest.json" />
