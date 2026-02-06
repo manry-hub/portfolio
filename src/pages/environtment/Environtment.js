@@ -42,8 +42,7 @@ export const Environtment = () => {
                     Javascript library of choice. The component-centric mental model is
                     the first thing that truly made sense to me as a designer. and if I
                     use react, I will definitely use{' '}
-                    <Link href="https://nextjs.org/"> Next js</Link> or{' '}
-                    <Link href="https://vite.dev/"> Vite.</Link>
+                    <Link href="https://nextjs.org/"> Next js.</Link>
                   </ListItem>
                   <ListItem>
                     <Link href="https://expressjs.com/">Express </Link> is my backend
@@ -57,10 +56,14 @@ export const Environtment = () => {
                     <Link href="https://spring.io/">Spring</Link> for building resilient,
                     enterprise-scale Java systems,{' '}
                     <Link href="https://laravel.com/">Laravel</Link> for well-structured
-                    and developer-friendly PHP applications, and{' '}
+                    and developer-friendly PHP applications,{' '}
                     <Link href="https://www.djangoproject.com/">Django</Link> for robust
-                    and security-first Python web applications. These give me the
-                    versatility to adapt to different project requirements
+                    Python web applications,{' '}
+                    <Link href="https://nestjs.com/">NestJS</Link> for scalable and
+                    maintainable Node.js backend architectures, and{' '}
+                    <Link href="https://go.dev/">Golang</Link> for high-performance,
+                    concurrent backend services. These give me the versatility to adapt to
+                    different project requirements
                   </ListItem>
                 </List>
               </ProjectSectionText>
