@@ -19,7 +19,6 @@ import { Profile } from 'layouts/Home/Profile';
 import { ProjectSummary } from 'layouts/Home/ProjectSummary';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Home.module.css';
-
 const disciplines = ['Engineer', 'Architect'];
 
 export const Home = () => {
@@ -207,6 +206,7 @@ export const Home = () => {
         visible={visibleSections.includes(details.current)}
         id="details"
       />
+
       <Footer />
     </div>
   );

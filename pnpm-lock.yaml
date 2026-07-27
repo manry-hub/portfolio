@@ -38,6 +38,9 @@ importers:
       mdx-bundler:
         specifier: ^9.0.1
         version: 9.2.1(esbuild@0.15.18)
+      motion:
+        specifier: ^12.34.3
+        version: 12.34.3(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next:
         specifier: ^12.2.5
         version: 12.3.7(@babel/core@7.28.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4172,6 +4175,20 @@ packages:
     resolution: {integrity: sha512-GMBAbW9antB8iZRHLoGw0b3HANt57diZYFO/HL1JGIC1MjKrdmhxvrJbupnVvpys0zsz7yBApXdQyfepKly2kA==}
     engines: {node: '>=0.10.0'}
 
+  framer-motion@12.34.3:
+    resolution: {integrity: sha512-v81ecyZKYO/DfpTwHivqkxSUBzvceOpoI+wLfgCgoUIKxlFKEXdg0oR9imxwXumT4SFy8vRk9xzJ5l3/Du/55Q==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   framer-motion@7.10.3:
     resolution: {integrity: sha512-k2ccYeZNSpPg//HTaqrU+4pRq9f9ZpaaN7rr0+Rx5zA4wZLbk547wtDzge2db1sB+1mnJ6r59P4xb+aEIi/W+w==}
     peerDependencies:
@@ -5776,6 +5793,26 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+
+  motion-dom@12.34.3:
+    resolution: {integrity: sha512-sYgFe+pR9aIM7o4fhs2aXtOI+oqlUd33N9Yoxcgo1Fv7M20sRkHtCmzE/VRNIcq7uNJ+qio+Xubt1FXH3pQ+eQ==}
+
+  motion-utils@12.29.2:
+    resolution: {integrity: sha512-G3kc34H2cX2gI63RqU+cZq+zWRRPSsNIOjpdl9TN4AQwC4sgwYPl/Q/Obf/d53nOm569T0fYK+tcoSV50BWx8A==}
+
+  motion@12.34.3:
+    resolution: {integrity: sha512-xZIkBGO7v/Uvm+EyaqYd+9IpXu0sZqLywVlGdCFrrMiaO9JI4Kx51mO9KlHSWwll+gZUVY5OJsWgYI5FywJ/tw==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   move-concurrently@1.0.1:
     resolution: {integrity: sha512-hdrFxZOycD/g6A6SoI2bB5NA/5NEqD0569+S47WZhPvm46sD50ZHdYaFmnua5lndde9rCHGjmfK7Z8BuCt/PcQ==}
@@ -10706,7 +10743,7 @@ snapshots:
       style-loader: 1.3.0(webpack@4.47.0)
       terser-webpack-plugin: 4.2.3(webpack@4.47.0)
       ts-dedent: 2.2.0
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.101.3(esbuild@0.15.18)))(webpack@4.47.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.47.0))(webpack@4.47.0)
       util-deprecate: 1.0.2
       webpack: 4.47.0
       webpack-dev-middleware: 3.7.3(webpack@4.47.0)
@@ -11177,7 +11214,7 @@ snapshots:
       core-js: 3.45.1
       css-loader: 3.6.0(webpack@4.47.0)
       express: 4.21.2
-      file-loader: 6.2.0(webpack@4.47.0)
+      file-loader: 6.2.0(webpack@5.101.3(esbuild@0.15.18))
       find-up: 5.0.0
       fs-extra: 9.1.0
       html-webpack-plugin: 4.5.2(webpack@4.47.0)
@@ -11192,7 +11229,7 @@ snapshots:
       telejson: 6.0.8
       terser-webpack-plugin: 4.2.3(webpack@4.47.0)
       ts-dedent: 2.2.0
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.101.3(esbuild@0.15.18)))(webpack@4.47.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.47.0))(webpack@4.47.0)
       util-deprecate: 1.0.2
       webpack: 4.47.0
       webpack-dev-middleware: 3.7.3(webpack@4.47.0)
@@ -14238,6 +14275,12 @@ snapshots:
       schema-utils: 3.3.0
       webpack: 4.47.0
 
+  file-loader@6.2.0(webpack@5.101.3(esbuild@0.15.18)):
+    dependencies:
+      loader-utils: 2.0.4
+      schema-utils: 3.3.0
+      webpack: 5.101.3(esbuild@0.15.18)
+
   file-system-cache@1.1.0:
     dependencies:
       fs-extra: 10.1.0
@@ -14406,6 +14449,16 @@ snapshots:
   fragment-cache@0.2.1:
     dependencies:
       map-cache: 0.2.2
+
+  framer-motion@12.34.3(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      motion-dom: 12.34.3
+      motion-utils: 12.29.2
+      tslib: 2.8.1
+    optionalDependencies:
+      '@emotion/is-prop-valid': 1.2.2
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   framer-motion@7.10.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -16375,6 +16428,21 @@ snapshots:
       minimist: 1.2.8
 
   mkdirp@1.0.4: {}
+
+  motion-dom@12.34.3:
+    dependencies:
+      motion-utils: 12.29.2
+
+  motion-utils@12.29.2: {}
+
+  motion@12.34.3(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      framer-motion: 12.34.3(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tslib: 2.8.1
+    optionalDependencies:
+      '@emotion/is-prop-valid': 1.2.2
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   move-concurrently@1.0.1:
     dependencies:
@@ -19429,14 +19497,14 @@ snapshots:
 
   urix@0.1.0: {}
 
-  url-loader@4.1.1(file-loader@6.2.0(webpack@5.101.3(esbuild@0.15.18)))(webpack@4.47.0):
+  url-loader@4.1.1(file-loader@6.2.0(webpack@4.47.0))(webpack@4.47.0):
     dependencies:
       loader-utils: 2.0.4
       mime-types: 2.1.35
       schema-utils: 3.3.0
       webpack: 4.47.0
     optionalDependencies:
-      file-loader: 6.2.0(webpack@4.47.0)
+      file-loader: 6.2.0(webpack@5.101.3(esbuild@0.15.18))
 
   url-parse-lax@1.0.0:
     dependencies:
