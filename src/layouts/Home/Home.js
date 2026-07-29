@@ -109,25 +109,25 @@ export const Home = () => {
         disciplines={disciplines}
         scrollIndicatorHidden={scrollIndicatorHidden}
       />
-      {projectsData.web.length > 0 && (
+      {projectsData.web.filter(p => p.showOnHome !== false).length > 0 && (
         <ProjectSummary
           id="web-projects"
           sectionRef={webProjectRef}
           visible={visibleSections.includes(webProjectRef.current)}
           index={1}
-          onNext={() => setActiveWebIndex(prev => (prev + 1) % projectsData.web.length)}
+          onNext={() => setActiveWebIndex(prev => (prev + 1) % projectsData.web.filter(p => p.showOnHome !== false).length)}
           onPrev={() =>
             setActiveWebIndex(
-              prev => (prev - 1 + projectsData.web.length) % projectsData.web.length
+              prev => (prev - 1 + projectsData.web.filter(p => p.showOnHome !== false).length) % projectsData.web.filter(p => p.showOnHome !== false).length
             )
           }
           currentIndex={activeWebIndex + 1}
-          totalProjects={projectsData.web.length}
-          {...getProjectData(projectsData.web[activeWebIndex])}
+          totalProjects={projectsData.web.filter(p => p.showOnHome !== false).length}
+          {...getProjectData(projectsData.web.filter(p => p.showOnHome !== false)[activeWebIndex])}
         />
       )}
 
-      {projectsData.mobile.length > 0 && (
+      {projectsData.mobile.filter(p => p.showOnHome !== false).length > 0 && (
         <ProjectSummary
           id="mobile-projects"
           alternate
@@ -135,16 +135,16 @@ export const Home = () => {
           visible={visibleSections.includes(mobileProjectRef.current)}
           index={2}
           onNext={() =>
-            setActiveMobileIndex(prev => (prev + 1) % projectsData.mobile.length)
+            setActiveMobileIndex(prev => (prev + 1) % projectsData.mobile.filter(p => p.showOnHome !== false).length)
           }
           onPrev={() =>
             setActiveMobileIndex(
-              prev => (prev - 1 + projectsData.mobile.length) % projectsData.mobile.length
+              prev => (prev - 1 + projectsData.mobile.filter(p => p.showOnHome !== false).length) % projectsData.mobile.filter(p => p.showOnHome !== false).length
             )
           }
           currentIndex={activeMobileIndex + 1}
-          totalProjects={projectsData.mobile.length}
-          {...getProjectData(projectsData.mobile[activeMobileIndex])}
+          totalProjects={projectsData.mobile.filter(p => p.showOnHome !== false).length}
+          {...getProjectData(projectsData.mobile.filter(p => p.showOnHome !== false)[activeMobileIndex])}
         />
       )}
 

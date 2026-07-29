@@ -85,8 +85,20 @@ export default function handler(req, res) {
         return res.status(200).json({ message: 'Project deleted', data });
       }
 
+      case 'PATCH': {
+        const { category, projects } = req.body;
+
+        if (!data[category] || !Array.isArray(projects)) {
+          return res.status(400).json({ message: 'Invalid payload' });
+        }
+
+        data[category] = projects;
+        writeData(data);
+        return res.status(200).json({ message: 'Projects reordered', data });
+      }
+
       default:
-        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']);
         return res.status(405).json({ message: `Method ${req.method} Not Allowed` });
     }
   } catch (error) {

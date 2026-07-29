@@ -29,6 +29,7 @@ export default function Dashboard({ user, initialProjects }) {
     type: 'laptop',
     alt: 'Project screenshot',
     textures: [{ src: '', placeholder: '' }],
+    showOnHome: true,
   };
 
   const [formData, setFormData] = useState(defaultForm);
@@ -55,6 +56,7 @@ export default function Dashboard({ user, initialProjects }) {
       type: project.model?.type || 'laptop',
       alt: project.model?.alt || '',
       textures: project.model?.textures || [{ src: '', placeholder: '' }],
+      showOnHome: project.showOnHome !== false,
     });
     setEditingCategory(category);
     setIsEditing(true);
@@ -73,6 +75,27 @@ export default function Dashboard({ user, initialProjects }) {
     refreshData();
   };
 
+  const moveProject = async (index, direction, category) => {
+    const list = [...projectsData[category]];
+    if (direction === 'up' && index > 0) {
+      [list[index - 1], list[index]] = [list[index], list[index - 1]];
+    } else if (direction === 'down' && index < list.length - 1) {
+      [list[index + 1], list[index]] = [list[index], list[index + 1]];
+    } else {
+      return;
+    }
+
+    // Optimistically update UI
+    setProjectsData({ ...projectsData, [category]: list });
+
+    // Send to backend
+    await fetch('/api/projects', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category, projects: list }),
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -83,6 +106,7 @@ export default function Dashboard({ user, initialProjects }) {
         description: formData.description,
         buttonText: formData.buttonText,
         buttonLink: formData.buttonLink,
+        showOnHome: formData.showOnHome,
         model: {
           type: formData.type,
           alt: formData.alt,
@@ -210,13 +234,20 @@ export default function Dashboard({ user, initialProjects }) {
       {!isFormOpen ? (
         <div className={styles.list}>
           <Heading level={3} as="h2">Web Projects</Heading>
-          {projectsData.web?.map((project) => (
+          {projectsData.web?.map((project, index) => (
             <div key={project.id} className={styles.card}>
               <div className={styles.cardInfo}>
-                <h3>{project.title}</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h3>{project.title}</h3>
+                  {project.showOnHome === false && (
+                    <span style={{ fontSize: '10px', padding: '2px 6px', background: 'rgba(255,0,0,0.2)', color: '#ff8888', borderRadius: '10px' }}>Hidden</span>
+                  )}
+                </div>
                 <p>{project.description}</p>
               </div>
               <div className={styles.cardActions}>
+                <Button secondary onClick={() => moveProject(index, 'up', 'web')} disabled={index === 0}>↑</Button>
+                <Button secondary onClick={() => moveProject(index, 'down', 'web')} disabled={index === projectsData.web.length - 1}>↓</Button>
                 <Button secondary onClick={() => handleEdit(project, 'web')}>Edit</Button>
                 <Button secondary onClick={() => handleDelete(project.id, 'web')}>Delete</Button>
               </div>
@@ -224,13 +255,15 @@ export default function Dashboard({ user, initialProjects }) {
           ))}
 
           <Heading level={3} as="h2" style={{ marginTop: 'var(--spaceL)' }}>Mobile Projects</Heading>
-          {projectsData.mobile?.map((project) => (
+          {projectsData.mobile?.map((project, index) => (
             <div key={project.id} className={styles.card}>
               <div className={styles.cardInfo}>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
               </div>
               <div className={styles.cardActions}>
+                <Button secondary onClick={() => moveProject(index, 'up', 'mobile')} disabled={index === 0}>↑</Button>
+                <Button secondary onClick={() => moveProject(index, 'down', 'mobile')} disabled={index === projectsData.mobile.length - 1}>↓</Button>
                 <Button secondary onClick={() => handleEdit(project, 'mobile')}>Edit</Button>
                 <Button secondary onClick={() => handleDelete(project.id, 'mobile')}>Delete</Button>
               </div>
@@ -254,6 +287,16 @@ export default function Dashboard({ user, initialProjects }) {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 required
               />
+            </div>
+            
+            <div style={{ marginTop: 'var(--spaceM)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <input 
+                type="checkbox" 
+                id="showOnHome" 
+                checked={formData.showOnHome} 
+                onChange={(e) => setFormData({ ...formData, showOnHome: e.target.checked })} 
+              />
+              <label htmlFor="showOnHome" style={{ fontSize: '14px' }}>Show on Homepage</label>
             </div>
             
             <div className={styles.formRow}>

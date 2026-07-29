@@ -111,6 +111,24 @@
           }
         ]
       }
+    },
+    {
+      "id": "project-1785297577172",
+      "title": "tes",
+      "description": "tes",
+      "buttonText": "View Project",
+      "buttonLink": "tes",
+      "showOnHome": true,
+      "model": {
+        "type": "phone",
+        "alt": "Project screenshot",
+        "textures": [
+          {
+            "src": "/uploads/img-1785297568025.webp",
+            "placeholder": "/uploads/img-1785297568025.webp"
+          }
+        ]
+      }
     }
   ]
 }
