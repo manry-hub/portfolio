@@ -4,11 +4,8 @@ import himasisLarge from 'assets/himasis-large.png';
 import omahkopiLarge from 'assets/omah-kopi.png';
 import tracktivLarge from 'assets/tracktiv-large.png';
 import gamestackTexture2Placeholder from 'assets/gamestack-list-placeholder.jpg';
-
 import gamestackTexturePlaceholder from 'assets/gamestack-login-placeholder.jpg';
-
 import sprTexturePlaceholder from 'assets/spr-lesson-builder-dark-placeholder.jpg';
-
 import chickenOrder from 'assets/ayam-potong-view.png';
 import chickenBox from 'assets/ayam-potong-box.png';
 
@@ -19,29 +16,53 @@ import { Profile } from 'layouts/Home/Profile';
 import { ProjectSummary } from 'layouts/Home/ProjectSummary';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Home.module.css';
+import projectsData from 'data/projects.json';
+
 const disciplines = ['Engineer', 'Architect'];
+
+const imageMap = {
+  safedriveLarge,
+  safedriveCamera,
+  himasisLarge,
+  omahkopiLarge,
+  tracktivLarge,
+  gamestackTexture2Placeholder,
+  gamestackTexturePlaceholder,
+  sprTexturePlaceholder,
+  chickenOrder,
+  chickenBox,
+};
+
+const getProjectData = project => {
+  return {
+    ...project,
+    model: {
+      ...project.model,
+      textures: project.model.textures.map(texture => {
+        const srcObj = imageMap[texture.src] || { src: texture.src, width: 1920, height: 1080 };
+        const placeholderObj = imageMap[texture.placeholder] || { src: texture.placeholder, width: 1920, height: 1080 };
+        return {
+          srcSet: [srcObj],
+          placeholder: placeholderObj,
+        };
+      }),
+    },
+  };
+};
 
 export const Home = () => {
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
+  const [activeWebIndex, setActiveWebIndex] = useState(0);
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+
   const intro = useRef();
-  const projectOne = useRef();
-  const projectTwo = useRef();
-  const projectThree = useRef();
-  const projectFour = useRef();
-  const projectFive = useRef();
+  const webProjectRef = useRef();
+  const mobileProjectRef = useRef();
   const details = useRef();
 
   useEffect(() => {
-    const sections = [
-      intro,
-      projectOne,
-      projectTwo,
-      projectThree,
-      projectFour,
-      projectFive,
-      details,
-    ];
+    const sections = [intro, webProjectRef, mobileProjectRef, details];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -88,119 +109,45 @@ export const Home = () => {
         disciplines={disciplines}
         scrollIndicatorHidden={scrollIndicatorHidden}
       />
-      <ProjectSummary
-        id="project-1"
-        sectionRef={projectOne}
-        visible={visibleSections.includes(projectOne.current)}
-        index={1}
-        title="hacktiv8 course path"
-        description="Build a platform to help customer make a decission for buying course in hacktiv8 with AI Assistence from IBM Granite"
-        buttonText="View project"
-        buttonLink="https://github.com/manry-hub/Tracktiv8"
-        model={{
-          type: 'laptop',
-          alt: 'Displaying the home page of the website.',
-          textures: [
-            {
-              srcSet: [tracktivLarge, tracktivLarge],
-              placeholder: sprTexturePlaceholder,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-2"
-        alternate
-        sectionRef={projectTwo}
-        visible={visibleSections.includes(projectTwo.current)}
-        index={2}
-        title="Driver Safety Detection"
-        description="design and development app to help driver safety with React Native"
-        buttonText="View Project"
-        buttonLink="https://github.com/manry-hub/SafeDrive"
-        model={{
-          type: 'phone',
-          alt: 'App login screen',
-          textures: [
-            {
-              srcSet: [safedriveCamera],
-              placeholder: gamestackTexturePlaceholder,
-            },
-            {
-              srcSet: [safedriveLarge],
-              placeholder: gamestackTexture2Placeholder,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-3"
-        // alternate
-        sectionRef={projectThree}
-        visible={visibleSections.includes(projectThree.current)}
-        index={3}
-        title="Article Website"
-        description="Improve the UI and UX appearance of the old Organization website and develop it regularly"
-        buttonText="View Project"
-        buttonLink="https://himasis.org/"
-        model={{
-          type: 'laptop',
-          alt: 'landing page',
-          textures: [
-            {
-              srcSet: [himasisLarge],
-              placeholder: gamestackTexturePlaceholder,
-            },
-          ],
-        }}
-      />
+      {projectsData.web.length > 0 && (
+        <ProjectSummary
+          id="web-projects"
+          sectionRef={webProjectRef}
+          visible={visibleSections.includes(webProjectRef.current)}
+          index={1}
+          onNext={() => setActiveWebIndex(prev => (prev + 1) % projectsData.web.length)}
+          onPrev={() =>
+            setActiveWebIndex(
+              prev => (prev - 1 + projectsData.web.length) % projectsData.web.length
+            )
+          }
+          currentIndex={activeWebIndex + 1}
+          totalProjects={projectsData.web.length}
+          {...getProjectData(projectsData.web[activeWebIndex])}
+        />
+      )}
 
-      <ProjectSummary
-        id="project-4"
-        alternate
-        sectionRef={projectFour}
-        visible={visibleSections.includes(projectFour.current)}
-        index={4}
-        title="Chicken Distributor Ordering"
-        description="design and development e-commerce app to make selling chickens to the right target just with html css js and PWA"
-        buttonText="View Website"
-        buttonLink="https://web-distributor-ordering.vercel.app"
-        model={{
-          type: 'phone',
-          alt: 'App login screen',
-          textures: [
-            {
-              srcSet: [chickenBox],
-              placeholder: gamestackTexture2Placeholder,
-            },
-            {
-              srcSet: [chickenOrder],
-              placeholder: gamestackTexturePlaceholder,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-5"
-        // alternate
-        sectionRef={projectFive}
-        visible={visibleSections.includes(projectFive.current)}
-        index={5}
-        title="Landing Page & SEO Optimization"
-        description="Build a fast, modern, and SEO-optimized company profile landing page using Astro JS for better performance."
-        buttonText="View Website"
-        buttonLink="https://omahkopi78.com"
-        model={{
-          type: 'laptop',
-          alt: 'landing page',
-          textures: [
-            {
-              srcSet: [omahkopiLarge],
-              placeholder: gamestackTexturePlaceholder,
-            },
-          ],
-        }}
-      />
+      {projectsData.mobile.length > 0 && (
+        <ProjectSummary
+          id="mobile-projects"
+          alternate
+          sectionRef={mobileProjectRef}
+          visible={visibleSections.includes(mobileProjectRef.current)}
+          index={2}
+          onNext={() =>
+            setActiveMobileIndex(prev => (prev + 1) % projectsData.mobile.length)
+          }
+          onPrev={() =>
+            setActiveMobileIndex(
+              prev => (prev - 1 + projectsData.mobile.length) % projectsData.mobile.length
+            )
+          }
+          currentIndex={activeMobileIndex + 1}
+          totalProjects={projectsData.mobile.length}
+          {...getProjectData(projectsData.mobile[activeMobileIndex])}
+        />
+      )}
+
       <Profile
         sectionRef={details}
         visible={visibleSections.includes(details.current)}

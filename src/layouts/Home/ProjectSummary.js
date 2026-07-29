@@ -26,6 +26,10 @@ export const ProjectSummary = ({
   buttonText,
   buttonLink,
   alternate,
+  onNext,
+  onPrev,
+  currentIndex,
+  totalProjects,
   ...rest
 }) => {
   const [focused, setFocused] = useState(false);
@@ -34,7 +38,8 @@ export const ProjectSummary = ({
   const titleId = `${id}-title`;
   const isMobile = width <= media.tablet;
   const svgOpacity = theme.themeId === 'light' ? 0.7 : 1;
-  const indexText = index < 10 ? `0${index}` : index;
+  const displayIndex = currentIndex || index;
+  const indexText = displayIndex < 10 ? `0${displayIndex}` : displayIndex;
   const phoneSizes = `(max-width: ${media.tablet}px) 30vw, 20vw`;
   const laptopSizes = `(max-width: ${media.tablet}px) 80vw, 40vw`;
 
@@ -80,9 +85,25 @@ export const ProjectSummary = ({
         {description}
       </Text>
       <div className={styles.button} data-visible={visible}>
-        <Button iconHoverShift href={buttonLink} iconEnd="arrowRight">
+        <Button iconHoverShift href={buttonLink}>
           {buttonText}
         </Button>
+        {onNext && onPrev && totalProjects > 1 && (
+          <div className={styles.navButtons}>
+            <Button
+              iconOnly
+              icon="arrowLeft"
+              onClick={onPrev}
+              aria-label="Previous project"
+            />
+            <Button
+              iconOnly
+              icon="arrowRight"
+              onClick={onNext}
+              aria-label="Next project"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -94,6 +115,7 @@ export const ProjectSummary = ({
           {renderKatakana('laptop', visible)}
           <div className={styles.model} data-device="laptop">
             <Model
+              key={title}
               alt={model.alt}
               cameraPosition={{ x: 0, y: 0, z: 8 }}
               showDelay={700}
@@ -116,6 +138,7 @@ export const ProjectSummary = ({
           {renderKatakana('phone', visible)}
           <div className={styles.model} data-device="phone">
             <Model
+              key={title}
               alt={model.alt}
               cameraPosition={{ x: 0, y: 0, z: 11.5 }}
               showDelay={300}

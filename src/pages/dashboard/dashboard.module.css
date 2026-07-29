@@ -1,0 +1,94 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space3XL) var(--spaceL);
+  max-width: var(--maxWidthL);
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space2XL);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spaceM);
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spaceL);
+  background: rgba(var(--rgbBackgroundLight), 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(var(--rgbText), 0.1);
+}
+
+.cardInfo h3 {
+  margin: 0;
+  margin-bottom: var(--spaceS);
+  font-size: var(--fontSizeBodyL);
+}
+
+.cardInfo p {
+  margin: 0;
+  font-size: var(--fontSizeBodyS);
+  color: rgba(var(--rgbText), 0.7);
+}
+
+.cardActions {
+  display: flex;
+  gap: var(--spaceM);
+}
+
+.formContainer {
+  margin-top: var(--space2XL);
+  padding: var(--space2XL);
+  background: rgba(var(--rgbBackgroundLight), 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(var(--rgbText), 0.1);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spaceL);
+  margin-top: var(--spaceL);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spaceL);
+}
+
+@media (max-width: 768px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.texturesSection {
+  margin-top: var(--spaceM);
+  padding: var(--spaceL);
+  background: rgba(var(--rgbBackground), 0.5);
+  border-radius: 8px;
+}
+
+.textureItem {
+  display: flex;
+  gap: var(--spaceM);
+  margin-top: var(--spaceM);
+}
+
+.formActions {
+  display: flex;
+  gap: var(--spaceM);
+  margin-top: var(--spaceXL);
+}
