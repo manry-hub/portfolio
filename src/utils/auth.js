@@ -1,6 +1,10 @@
 import crypto from 'crypto';
 
-const SECRET = process.env.JWT_SECRET || 'fallback_secret_for_development_only';
+const SECRET = process.env.JWT_SECRET;
+if (!SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('FATAL: JWT_SECRET environment variable is not set. Refusing to start.');
+}
+const SIGNING_KEY = SECRET || 'dev_only_insecure_key_' + crypto.randomBytes(16).toString('hex');
 
 // Base64URL encoding/decoding for JWT
 const base64url = (str) => {
@@ -33,7 +37,7 @@ export const signToken = (payload, expiresInSeconds = 86400) => {
   
   const signatureInput = `${encodedHeader}.${encodedPayload}`;
   const signature = crypto
-    .createHmac('sha256', SECRET)
+    .createHmac('sha256', SIGNING_KEY)
     .update(signatureInput)
     .digest('base64')
     .replace(/=/g, '')
@@ -55,7 +59,7 @@ export const verifyToken = (token) => {
   const [encodedHeader, encodedPayload, signature] = parts;
   
   const expectedSignature = crypto
-    .createHmac('sha256', SECRET)
+    .createHmac('sha256', SIGNING_KEY)
     .update(`${encodedHeader}.${encodedPayload}`)
     .digest('base64')
     .replace(/=/g, '')

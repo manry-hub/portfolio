@@ -118,7 +118,7 @@ export default function Projects({ allProjects }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
   const fileData = fs.readFileSync(dataFilePath, 'utf8');
   const parsedData = JSON.parse(fileData);

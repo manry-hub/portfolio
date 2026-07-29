@@ -14,7 +14,7 @@ import { Meta } from 'components/Meta';
 import { Intro } from 'layouts/Home/Intro';
 import { Profile } from 'layouts/Home/Profile';
 import { ProjectSummary } from 'layouts/Home/ProjectSummary';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './Home.module.css';
 
 const disciplines = ['Engineer', 'Architect'];
@@ -54,6 +54,15 @@ export const Home = ({ projectsData = { web: [], mobile: [] } }) => {
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
   const [activeWebIndex, setActiveWebIndex] = useState(0);
   const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+
+  const visibleWeb = useMemo(
+    () => projectsData.web.filter(p => p.showOnHome !== false),
+    [projectsData]
+  );
+  const visibleMobile = useMemo(
+    () => projectsData.mobile.filter(p => p.showOnHome !== false),
+    [projectsData]
+  );
 
   const intro = useRef();
   const webProjectRef = useRef();
@@ -108,25 +117,23 @@ export const Home = ({ projectsData = { web: [], mobile: [] } }) => {
         disciplines={disciplines}
         scrollIndicatorHidden={scrollIndicatorHidden}
       />
-      {projectsData.web.filter(p => p.showOnHome !== false).length > 0 && (
+      {visibleWeb.length > 0 && (
         <ProjectSummary
           id="web-projects"
           sectionRef={webProjectRef}
           visible={visibleSections.includes(webProjectRef.current)}
           index={1}
-          onNext={() => setActiveWebIndex(prev => (prev + 1) % projectsData.web.filter(p => p.showOnHome !== false).length)}
+          onNext={() => setActiveWebIndex(prev => (prev + 1) % visibleWeb.length)}
           onPrev={() =>
-            setActiveWebIndex(
-              prev => (prev - 1 + projectsData.web.filter(p => p.showOnHome !== false).length) % projectsData.web.filter(p => p.showOnHome !== false).length
-            )
+            setActiveWebIndex(prev => (prev - 1 + visibleWeb.length) % visibleWeb.length)
           }
           currentIndex={activeWebIndex + 1}
-          totalProjects={projectsData.web.filter(p => p.showOnHome !== false).length}
-          {...getProjectData(projectsData.web.filter(p => p.showOnHome !== false)[activeWebIndex])}
+          totalProjects={visibleWeb.length}
+          {...getProjectData(visibleWeb[activeWebIndex])}
         />
       )}
 
-      {projectsData.mobile.filter(p => p.showOnHome !== false).length > 0 && (
+      {visibleMobile.length > 0 && (
         <ProjectSummary
           id="mobile-projects"
           alternate
@@ -134,16 +141,16 @@ export const Home = ({ projectsData = { web: [], mobile: [] } }) => {
           visible={visibleSections.includes(mobileProjectRef.current)}
           index={2}
           onNext={() =>
-            setActiveMobileIndex(prev => (prev + 1) % projectsData.mobile.filter(p => p.showOnHome !== false).length)
+            setActiveMobileIndex(prev => (prev + 1) % visibleMobile.length)
           }
           onPrev={() =>
             setActiveMobileIndex(
-              prev => (prev - 1 + projectsData.mobile.filter(p => p.showOnHome !== false).length) % projectsData.mobile.filter(p => p.showOnHome !== false).length
+              prev => (prev - 1 + visibleMobile.length) % visibleMobile.length
             )
           }
           currentIndex={activeMobileIndex + 1}
-          totalProjects={projectsData.mobile.filter(p => p.showOnHome !== false).length}
-          {...getProjectData(projectsData.mobile.filter(p => p.showOnHome !== false)[activeMobileIndex])}
+          totalProjects={visibleMobile.length}
+          {...getProjectData(visibleMobile[activeMobileIndex])}
         />
       )}
 
