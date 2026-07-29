@@ -1,23 +1,6 @@
 {
   "web": [
     {
-      "id": "project-1",
-      "title": "hacktiv8 course path",
-      "description": "Build a platform to help customer make a decission for buying course in hacktiv8 with AI Assistence from IBM Granite",
-      "buttonText": "View project",
-      "buttonLink": "https://github.com/manry-hub/Tracktiv8",
-      "model": {
-        "type": "laptop",
-        "alt": "Displaying the home page of the website.",
-        "textures": [
-          {
-            "src": "tracktivLarge",
-            "placeholder": "sprTexturePlaceholder"
-          }
-        ]
-      }
-    },
-    {
       "id": "project-3",
       "title": "Article Website",
       "description": "Improve the UI and UX appearance of the old Organization website and develop it regularly",
@@ -40,6 +23,7 @@
       "description": "Build a fast, modern, and SEO-optimized company profile landing page using Astro JS for better performance.",
       "buttonText": "View Website",
       "buttonLink": "https://omahkopi78.com",
+      "showOnHome": true,
       "model": {
         "type": "laptop",
         "alt": "landing page",
@@ -52,18 +36,19 @@
       }
     },
     {
-      "id": "project-1785290390725",
-      "title": "tesprojecet1",
-      "description": "tes",
-      "buttonText": "View Project",
-      "buttonLink": "hjs",
+      "id": "project-1",
+      "title": "hacktiv8 course path",
+      "description": "Build a platform to help customer make a decission for buying course in hacktiv8 with AI Assistence from IBM Granite",
+      "buttonText": "View project",
+      "buttonLink": "https://github.com/manry-hub/Tracktiv8",
+      "showOnHome": true,
       "model": {
         "type": "laptop",
-        "alt": "Project screenshot",
+        "alt": "Displaying the home page of the website.",
         "textures": [
           {
-            "src": "/uploads/img-1785290385268.webp",
-            "placeholder": "/uploads/img-1785290385268.webp"
+            "src": "tracktivLarge",
+            "placeholder": "sprTexturePlaceholder"
           }
         ]
       }
@@ -108,24 +93,6 @@
           {
             "src": "chickenOrder",
             "placeholder": "gamestackTexturePlaceholder"
-          }
-        ]
-      }
-    },
-    {
-      "id": "project-1785297577172",
-      "title": "tes",
-      "description": "tes",
-      "buttonText": "View Project",
-      "buttonLink": "tes",
-      "showOnHome": true,
-      "model": {
-        "type": "phone",
-        "alt": "Project screenshot",
-        "textures": [
-          {
-            "src": "/uploads/img-1785297568025.webp",
-            "placeholder": "/uploads/img-1785297568025.webp"
           }
         ]
       }

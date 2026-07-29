@@ -16,7 +16,6 @@ import { Profile } from 'layouts/Home/Profile';
 import { ProjectSummary } from 'layouts/Home/ProjectSummary';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Home.module.css';
-import projectsData from 'data/projects.json';
 
 const disciplines = ['Engineer', 'Architect'];
 
@@ -50,7 +49,7 @@ const getProjectData = project => {
   };
 };
 
-export const Home = () => {
+export const Home = ({ projectsData = { web: [], mobile: [] } }) => {
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
   const [activeWebIndex, setActiveWebIndex] = useState(0);

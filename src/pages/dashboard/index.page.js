@@ -18,7 +18,7 @@ export default function Dashboard({ user, initialProjects }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editingCategory, setEditingCategory] = useState('');
   const [uploadingIndex, setUploadingIndex] = useState(null);
-  
+
   const defaultForm = {
     id: '',
     title: '',
@@ -40,7 +40,7 @@ export default function Dashboard({ user, initialProjects }) {
   };
 
   const refreshData = async () => {
-    const res = await fetch('/api/projects');
+    const res = await fetch(`/api/projects?t=${Date.now()}`);
     const data = await res.json();
     setProjectsData(data);
   };
@@ -65,13 +65,13 @@ export default function Dashboard({ user, initialProjects }) {
 
   const handleDelete = async (id, category) => {
     if (!window.confirm('Are you sure you want to delete this project?')) return;
-    
+
     await fetch('/api/projects', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, category }),
     });
-    
+
     refreshData();
   };
 
@@ -96,9 +96,9 @@ export default function Dashboard({ user, initialProjects }) {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    
+
     const payload = {
       project: {
         id: formData.id,
@@ -118,7 +118,7 @@ export default function Dashboard({ user, initialProjects }) {
     if (isEditing) {
       payload.oldCategory = editingCategory;
       payload.newCategory = formData.category;
-      
+
       await fetch('/api/projects', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -126,7 +126,7 @@ export default function Dashboard({ user, initialProjects }) {
       });
     } else {
       payload.category = formData.category;
-      
+
       await fetch('/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -156,7 +156,7 @@ export default function Dashboard({ user, initialProjects }) {
       const webpBase64 = await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = (e) => {
+        reader.onload = e => {
           const img = new Image();
           img.src = e.target.result;
           img.onload = () => {
@@ -199,10 +199,13 @@ export default function Dashboard({ user, initialProjects }) {
   };
 
   const addTexture = () => {
-    setFormData({ ...formData, textures: [...formData.textures, { src: '', placeholder: '' }] });
+    setFormData({
+      ...formData,
+      textures: [...formData.textures, { src: '', placeholder: '' }],
+    });
   };
 
-  const removeTexture = (index) => {
+  const removeTexture = index => {
     const newTextures = [...formData.textures];
     newTextures.splice(index, 1);
     setFormData({ ...formData, textures: newTextures });
@@ -211,50 +214,86 @@ export default function Dashboard({ user, initialProjects }) {
   return (
     <Section className={styles.dashboard}>
       <Meta title="Dashboard" description="Admin Dashboard" />
-      
+
       <div className={styles.header}>
         <div>
-          <Heading level={2} as="h1">Dashboard</Heading>
+          <Heading level={2} as="h1">
+            Dashboard
+          </Heading>
           <Text style={{ marginTop: 'var(--spaceS)' }}>Welcome, {user.username}</Text>
         </div>
         <div style={{ display: 'flex', gap: 'var(--spaceM)' }}>
-          {!isFormOpen && (
-            <Button onClick={() => {
-              setFormData(defaultForm);
-              setIsEditing(false);
-              setIsFormOpen(true);
-            }}>
-              Add New Project
-            </Button>
-          )}
-          <Button secondary onClick={handleLogout}>Logout</Button>
+          <Button secondary onClick={handleLogout}>
+            Logout
+          </Button>
         </div>
       </div>
 
       {!isFormOpen ? (
         <div className={styles.list}>
-          <Heading level={3} as="h2">Web Projects</Heading>
+          <br />
+          <Button
+            onClick={() => {
+              setFormData(defaultForm);
+              setIsEditing(false);
+              setIsFormOpen(true);
+            }}
+          >
+            Add New Project
+          </Button>
+          <br />
+          <Heading level={3} as="h2">
+            Web Projects
+          </Heading>
           {projectsData.web?.map((project, index) => (
             <div key={project.id} className={styles.card}>
               <div className={styles.cardInfo}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <h3>{project.title}</h3>
                   {project.showOnHome === false && (
-                    <span style={{ fontSize: '10px', padding: '2px 6px', background: 'rgba(255,0,0,0.2)', color: '#ff8888', borderRadius: '10px' }}>Hidden</span>
+                    <span
+                      style={{
+                        fontSize: '10px',
+                        padding: '2px 6px',
+                        background: 'rgba(255,0,0,0.2)',
+                        color: '#ff8888',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      Hidden
+                    </span>
                   )}
                 </div>
                 <p>{project.description}</p>
               </div>
               <div className={styles.cardActions}>
-                <Button secondary onClick={() => moveProject(index, 'up', 'web')} disabled={index === 0}>↑</Button>
-                <Button secondary onClick={() => moveProject(index, 'down', 'web')} disabled={index === projectsData.web.length - 1}>↓</Button>
-                <Button secondary onClick={() => handleEdit(project, 'web')}>Edit</Button>
-                <Button secondary onClick={() => handleDelete(project.id, 'web')}>Delete</Button>
+                <Button
+                  secondary
+                  onClick={() => moveProject(index, 'up', 'web')}
+                  disabled={index === 0}
+                >
+                  ↑
+                </Button>
+                <Button
+                  secondary
+                  onClick={() => moveProject(index, 'down', 'web')}
+                  disabled={index === projectsData.web.length - 1}
+                >
+                  ↓
+                </Button>
+                <Button secondary onClick={() => handleEdit(project, 'web')}>
+                  Edit
+                </Button>
+                <Button secondary onClick={() => handleDelete(project.id, 'web')}>
+                  Delete
+                </Button>
               </div>
             </div>
           ))}
 
-          <Heading level={3} as="h2" style={{ marginTop: 'var(--spaceL)' }}>Mobile Projects</Heading>
+          <Heading level={3} as="h2" style={{ marginTop: 'var(--spaceL)' }}>
+            Mobile Projects
+          </Heading>
           {projectsData.mobile?.map((project, index) => (
             <div key={project.id} className={styles.card}>
               <div className={styles.cardInfo}>
@@ -262,10 +301,26 @@ export default function Dashboard({ user, initialProjects }) {
                 <p>{project.description}</p>
               </div>
               <div className={styles.cardActions}>
-                <Button secondary onClick={() => moveProject(index, 'up', 'mobile')} disabled={index === 0}>↑</Button>
-                <Button secondary onClick={() => moveProject(index, 'down', 'mobile')} disabled={index === projectsData.mobile.length - 1}>↓</Button>
-                <Button secondary onClick={() => handleEdit(project, 'mobile')}>Edit</Button>
-                <Button secondary onClick={() => handleDelete(project.id, 'mobile')}>Delete</Button>
+                <Button
+                  secondary
+                  onClick={() => moveProject(index, 'up', 'mobile')}
+                  disabled={index === 0}
+                >
+                  ↑
+                </Button>
+                <Button
+                  secondary
+                  onClick={() => moveProject(index, 'down', 'mobile')}
+                  disabled={index === projectsData.mobile.length - 1}
+                >
+                  ↓
+                </Button>
+                <Button secondary onClick={() => handleEdit(project, 'mobile')}>
+                  Edit
+                </Button>
+                <Button secondary onClick={() => handleDelete(project.id, 'mobile')}>
+                  Delete
+                </Button>
               </div>
             </div>
           ))}
@@ -278,61 +333,81 @@ export default function Dashboard({ user, initialProjects }) {
               <Input
                 label="Project Title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={e => setFormData({ ...formData, title: e.target.value })}
                 required
               />
               <Input
                 label="Description"
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
                 required
               />
             </div>
-            
-            <div style={{ marginTop: 'var(--spaceM)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <input 
-                type="checkbox" 
-                id="showOnHome" 
-                checked={formData.showOnHome} 
-                onChange={(e) => setFormData({ ...formData, showOnHome: e.target.checked })} 
-              />
-              <label htmlFor="showOnHome" style={{ fontSize: '14px' }}>Show on Homepage</label>
-            </div>
-            
+
+            <label className={styles.toggleWrapper}>
+              <div className={styles.toggle}>
+                <input
+                  type="checkbox"
+                  checked={formData.showOnHome}
+                  onChange={e =>
+                    setFormData({ ...formData, showOnHome: e.target.checked })
+                  }
+                />
+                <span className={styles.slider}></span>
+              </div>
+              <span className={styles.toggleLabel}>Show on Homepage</span>
+            </label>
+
             <div className={styles.formRow}>
               <Input
                 label="Button Text"
                 value={formData.buttonText}
-                onChange={(e) => setFormData({ ...formData, buttonText: e.target.value })}
+                onChange={e => setFormData({ ...formData, buttonText: e.target.value })}
                 required
               />
               <Input
                 label="Button Link URL"
                 value={formData.buttonLink}
-                onChange={(e) => setFormData({ ...formData, buttonLink: e.target.value })}
+                onChange={e => setFormData({ ...formData, buttonLink: e.target.value })}
                 required
               />
             </div>
-            
+
             <div className={styles.formRow}>
               <div>
                 <label style={{ display: 'block', marginBottom: '8px' }}>Category</label>
-                <select 
-                  value={formData.category} 
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  style={{ width: '100%', padding: '12px', background: 'rgba(0,0,0,0.2)', color: 'inherit', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px' }}
+                <select
+                  value={formData.category}
+                  onChange={e => setFormData({ ...formData, category: e.target.value })}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: 'rgba(0,0,0,0.2)',
+                    color: 'inherit',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    borderRadius: '4px',
+                  }}
                 >
                   <option value="web">Web</option>
                   <option value="mobile">Mobile</option>
                 </select>
               </div>
-              
+
               <div>
-                <label style={{ display: 'block', marginBottom: '8px' }}>Device Model Type</label>
-                <select 
-                  value={formData.type} 
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                  style={{ width: '100%', padding: '12px', background: 'rgba(0,0,0,0.2)', color: 'inherit', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '4px' }}
+                <label style={{ display: 'block', marginBottom: '8px' }}>
+                  Device Model Type
+                </label>
+                <select
+                  value={formData.type}
+                  onChange={e => setFormData({ ...formData, type: e.target.value })}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: 'rgba(0,0,0,0.2)',
+                    color: 'inherit',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    borderRadius: '4px',
+                  }}
                 >
                   <option value="laptop">Laptop</option>
                   <option value="phone">Phone</option>
@@ -343,22 +418,45 @@ export default function Dashboard({ user, initialProjects }) {
             <div className={styles.texturesSection}>
               <Heading level={4}>Images (Textures)</Heading>
               <Text style={{ fontSize: '12px', marginTop: '8px' }}>
-                Upload an image. It will be automatically converted to WebP. Alternatively, type an existing variable name.
+                Upload an image. It will be automatically converted to WebP.
+                Alternatively, type an existing variable name.
               </Text>
-              
+
               {formData.textures.map((texture, index) => (
-                <div key={index} className={styles.textureItem} style={{ flexDirection: 'column', gap: '8px', padding: '16px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div
+                  key={index}
+                  className={styles.textureItem}
+                  style={{
+                    flexDirection: 'column',
+                    gap: '8px',
+                    padding: '16px',
+                    background: 'rgba(0,0,0,0.2)',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
                     <strong>Image {index + 1}</strong>
                     {formData.textures.length > 1 && (
-                      <Button type="button" secondary onClick={() => removeTexture(index)}>Remove</Button>
+                      <Button
+                        type="button"
+                        secondary
+                        onClick={() => removeTexture(index)}
+                      >
+                        Remove
+                      </Button>
                     )}
                   </div>
-                  
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={(e) => handleFileUpload(index, e)}
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={e => handleFileUpload(index, e)}
                     style={{ marginBottom: '8px' }}
                     disabled={uploadingIndex === index}
                   />
@@ -368,31 +466,44 @@ export default function Dashboard({ user, initialProjects }) {
                     <Input
                       label="Image Source (URL or Variable)"
                       value={texture.src}
-                      onChange={(e) => handleTextureChange(index, 'src', e.target.value)}
+                      onChange={e => handleTextureChange(index, 'src', e.target.value)}
                       required
                     />
                     <Input
                       label="Placeholder (URL or Variable)"
                       value={texture.placeholder}
-                      onChange={(e) => handleTextureChange(index, 'placeholder', e.target.value)}
+                      onChange={e =>
+                        handleTextureChange(index, 'placeholder', e.target.value)
+                      }
                       required
                     />
                   </div>
-                  
+
                   {texture.src && texture.src.startsWith('/') && (
-                    <img src={texture.src} alt="Preview" style={{ maxWidth: '200px', borderRadius: '4px', marginTop: '8px' }} />
+                    <img
+                      src={texture.src}
+                      alt="Preview"
+                      style={{ maxWidth: '200px', borderRadius: '4px', marginTop: '8px' }}
+                    />
                   )}
                 </div>
               ))}
-              
-              <Button type="button" secondary onClick={addTexture} style={{ marginTop: 'var(--spaceM)' }}>
+
+              <Button
+                type="button"
+                secondary
+                onClick={addTexture}
+                style={{ marginTop: 'var(--spaceM)' }}
+              >
                 Add Another Image
               </Button>
             </div>
 
             <div className={styles.formActions}>
               <Button type="submit">Save Project</Button>
-              <Button type="button" secondary onClick={() => setIsFormOpen(false)}>Cancel</Button>
+              <Button type="button" secondary onClick={() => setIsFormOpen(false)}>
+                Cancel
+              </Button>
             </div>
           </form>
         </div>
