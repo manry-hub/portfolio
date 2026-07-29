@@ -16,7 +16,6 @@ import styles from './projects.module.css';
 
 import usesBackgroundPlaceholder from 'assets/uses-background-placeholder.jpg';
 import usesBackground from 'assets/uses-background.mp4';
-import { ArrowBigLeft } from 'lucide-react';
 
 export default function Projects({ allProjects }) {
   const [searchQuery, setSearchQuery] = useState('');
