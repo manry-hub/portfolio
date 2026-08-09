@@ -34,36 +34,24 @@ export const Environtment = () => {
         <ProjectSection padding="none" className={styles.section}>
           <ProjectSectionContent>
             <ProjectTextRow width="m">
-              <ProjectSectionHeading>Software Engineering</ProjectSectionHeading>
+              <ProjectSectionHeading>Technologies I Use</ProjectSectionHeading>
               <ProjectSectionText as="div">
                 <List>
                   <ListItem>
                     <Link href="https://reactjs.org/">React</Link> is my front end
                     Javascript library of choice. The component-centric mental model is
-                    the first thing that truly made sense to me as a designer. and if I
-                    use react, I will definitely use{' '}
-                    <Link href="https://nextjs.org/"> Next js.</Link>
+                    the first thing that truly made sense to me. and if I use react, I
+                    will definitely use <Link href="https://nextjs.org/"> Next js.</Link>
                   </ListItem>
                   <ListItem>
-                    <Link href="https://expressjs.com/">Express </Link> is my backend
-                    framework of choice. Its simplicity and flexibility let me build
-                    scalable APIs without unnecessary overhead. As my main tool, it’s
-                    where I feel most efficient and creative when designing server-side
-                    logic.
-                  </ListItem>
-                  <ListItem>
-                    I’m also comfortable working with{' '}
-                    <Link href="https://spring.io/">Spring</Link> for building resilient,
-                    enterprise-scale Java systems,{' '}
-                    <Link href="https://laravel.com/">Laravel</Link> for well-structured
-                    and developer-friendly PHP applications,{' '}
-                    <Link href="https://www.djangoproject.com/">Django</Link> for robust
-                    Python web applications,{' '}
-                    <Link href="https://nestjs.com/">NestJS</Link> for scalable and
-                    maintainable Node.js backend architectures, and{' '}
-                    <Link href="https://go.dev/">Golang</Link> for high-performance,
-                    concurrent backend services. These give me the versatility to adapt to
-                    different project requirements
+                    For backend development, I primarily work with
+                    <Link href="https://laravel.com/"> Laravel</Link> is my go-to
+                    framework for rapid and well-structured product development,{' '}
+                    <Link href="https://spring.io/">Spring</Link> for enterprise-grade
+                    Java applications that require reliability and maintainability, and{' '}
+                    <Link href="https://nestjs.com/">NestJS</Link> for scalable Node.js
+                    services with a clean modular architecture. These give me the
+                    versatility to adapt to different project requirements
                   </ListItem>
                 </List>
               </ProjectSectionText>
@@ -88,14 +76,14 @@ export const Environtment = () => {
                   <TableRow>
                     <TableHeadCell>Tools</TableHeadCell>
                     <TableCell>
-                      Antigravity, Intellij Idea, Collab, Datagrip, Sparx Architecture
-                      Enterprise, etc.
+                      VsCode, Antigravity, Intellij Idea, Datagrip, Sparx Architecture
+                      Enterprise, Worksblue etc.
                     </TableCell>
                   </TableRow>
-                  <TableRow>
+                  {/* <TableRow>
                     <TableHeadCell>DBMS</TableHeadCell>
-                    <TableCell>PostgreSQL, MySQL, SQL Server, MongoDB, etc. </TableCell>
-                  </TableRow>
+                    <TableCell>PostgreSQL, MySQL, MongoDB, etc. </TableCell>
+                  </TableRow> */}
                 </TableBody>
               </Table>
             </ProjectTextRow>

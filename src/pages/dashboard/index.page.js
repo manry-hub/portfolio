@@ -11,9 +11,10 @@ import { useState } from 'react';
 import { parseCookies, verifyToken } from 'utils/auth';
 import styles from './dashboard.module.css';
 
-export default function Dashboard({ user, initialProjects }) {
+export default function Dashboard({ user, initialProjects, initialMessages = [] }) {
   const router = useRouter();
   const [projectsData, setProjectsData] = useState(initialProjects);
+  const [messagesData, setMessagesData] = useState(initialMessages);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingCategory, setEditingCategory] = useState('');
@@ -43,6 +44,9 @@ export default function Dashboard({ user, initialProjects }) {
     const res = await fetch(`/api/projects?t=${Date.now()}`);
     const data = await res.json();
     setProjectsData(data);
+    const msgRes = await fetch(`/api/messages?t=${Date.now()}`);
+    const msgData = await msgRes.json();
+    setMessagesData(msgData);
   };
 
   const handleEdit = (project, category) => {
@@ -70,6 +74,18 @@ export default function Dashboard({ user, initialProjects }) {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, category }),
+    });
+
+    refreshData();
+  };
+
+  const handleDeleteMessage = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this message?')) return;
+
+    await fetch('/api/messages', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
     });
 
     refreshData();
@@ -324,6 +340,28 @@ export default function Dashboard({ user, initialProjects }) {
               </div>
             </div>
           ))}
+
+          <Heading level={3} as="h2" style={{ marginTop: 'var(--spaceL)' }}>
+            Messages
+          </Heading>
+          {messagesData?.map((message) => (
+            <div key={message.id} className={styles.card}>
+              <div className={styles.cardInfo}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <h3>{message.email}</h3>
+                  <span style={{ fontSize: '12px', opacity: 0.7 }}>
+                    {new Date(message.date).toLocaleDateString()} {new Date(message.date).toLocaleTimeString()}
+                  </span>
+                </div>
+                <p style={{ whiteSpace: 'pre-wrap', marginTop: '8px' }}>{message.message}</p>
+              </div>
+              <div className={styles.cardActions}>
+                <Button secondary onClick={() => handleDeleteMessage(message.id)}>
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <div className={styles.formContainer}>
@@ -526,15 +564,24 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: '/login', permanent: false } };
   }
 
-  // Load initial data securely from server side
   const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
   const fileData = fs.readFileSync(dataFilePath, 'utf8');
   const initialProjects = JSON.parse(fileData);
+
+  let initialMessages = [];
+  try {
+    const messagesFilePath = path.join(process.cwd(), 'src', 'data', 'messages.json');
+    const messagesData = fs.readFileSync(messagesFilePath, 'utf8');
+    initialMessages = JSON.parse(messagesData);
+  } catch (error) {
+    console.error('Could not read messages.json', error);
+  }
 
   return {
     props: {
       user,
       initialProjects,
+      initialMessages,
     },
   };
 }
