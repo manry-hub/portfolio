@@ -10,6 +10,7 @@ import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion';
 import { useFoucFix, useLocalStorage } from 'hooks';
 import styles from 'layouts/App/App.module.css';
 import { initialState, reducer } from 'layouts/App/reducer';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Fragment, createContext, useEffect, useReducer } from 'react';
@@ -70,6 +71,7 @@ const App = ({ Component, pageProps }) => {
               />
             </Head>
             <GlobalAudio />
+            <SpeedInsights route={asPath} />
             <VisuallyHidden
               showOnFocus
               as="a"
