@@ -13,15 +13,32 @@ const isAuthenticated = req => {
   return !!user;
 };
 
-// Helper to read data
+const tmpDataFilePath = path.join('/tmp', 'projects.json');
+
+// Helper to read data (checks /tmp first if on Vercel/serverless)
 const readData = () => {
+  try {
+    if (fs.existsSync(tmpDataFilePath)) {
+      return JSON.parse(fs.readFileSync(tmpDataFilePath, 'utf8'));
+    }
+  } catch (error) {
+    console.warn('Could not read temporary projects file:', error.message);
+  }
   const fileData = fs.readFileSync(dataFilePath, 'utf8');
   return JSON.parse(fileData);
 };
 
-// Helper to write data
+// Helper to write data (falls back to /tmp when running on read-only serverless filesystem)
 const writeData = data => {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
+  try {
+    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
+  } catch (err) {
+    if (err.code === 'EROFS' || process.env.VERCEL) {
+      fs.writeFileSync(tmpDataFilePath, JSON.stringify(data, null, 2), 'utf8');
+      return;
+    }
+    throw err;
+  }
 };
 
 // --- Input Validation & Sanitization ---

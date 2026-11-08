@@ -7,11 +7,23 @@ export default function HomePage({ projectsData }) {
 }
 
 export async function getServerSideProps() {
-  const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
-  const fileData = fs.readFileSync(dataFilePath, 'utf8');
+  const tmpProjectsPath = path.join('/tmp', 'projects.json');
+  let projectsData = null;
+  try {
+    if (fs.existsSync(tmpProjectsPath)) {
+      projectsData = JSON.parse(fs.readFileSync(tmpProjectsPath, 'utf8'));
+    }
+  } catch (error) {
+    console.warn('Could not read temporary projects on home:', error.message);
+  }
+  if (!projectsData) {
+    const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
+    const fileData = fs.readFileSync(dataFilePath, 'utf8');
+    projectsData = JSON.parse(fileData);
+  }
   return {
     props: {
-      projectsData: JSON.parse(fileData),
+      projectsData,
     },
   };
 }

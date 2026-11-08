@@ -580,7 +580,7 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
                     />
                   </div>
 
-                  {texture.src && texture.src.startsWith('/') && (
+                  {texture.src && (
                     <img
                       src={texture.src}
                       alt="Preview"
@@ -639,15 +639,31 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: '/login', permanent: false } };
   }
 
-  const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
-  const fileData = fs.readFileSync(dataFilePath, 'utf8');
-  const initialProjects = JSON.parse(fileData);
+  const tmpProjectsPath = path.join('/tmp', 'projects.json');
+  let initialProjects = null;
+  try {
+    if (fs.existsSync(tmpProjectsPath)) {
+      initialProjects = JSON.parse(fs.readFileSync(tmpProjectsPath, 'utf8'));
+    }
+  } catch (error) {
+    console.warn('Could not read temporary projects in dashboard:', error.message);
+  }
+  if (!initialProjects) {
+    const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
+    const fileData = fs.readFileSync(dataFilePath, 'utf8');
+    initialProjects = JSON.parse(fileData);
+  }
 
   let initialMessages = [];
   try {
-    const messagesFilePath = path.join(process.cwd(), 'src', 'data', 'messages.json');
-    const messagesData = fs.readFileSync(messagesFilePath, 'utf8');
-    initialMessages = JSON.parse(messagesData);
+    const tmpMessagesPath = path.join('/tmp', 'messages.json');
+    if (fs.existsSync(tmpMessagesPath)) {
+      initialMessages = JSON.parse(fs.readFileSync(tmpMessagesPath, 'utf8'));
+    } else {
+      const messagesFilePath = path.join(process.cwd(), 'src', 'data', 'messages.json');
+      const messagesData = fs.readFileSync(messagesFilePath, 'utf8');
+      initialMessages = JSON.parse(messagesData);
+    }
   } catch (error) {
     console.error('Could not read messages.json', error);
   }

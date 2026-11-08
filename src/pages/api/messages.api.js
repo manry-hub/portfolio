@@ -13,8 +13,17 @@ const isAuthenticated = req => {
   return !!user;
 };
 
-// Helper to read data
+const tmpMessagesFilePath = path.join('/tmp', 'messages.json');
+
+// Helper to read data (checks /tmp first if on Vercel/serverless)
 const readData = () => {
+  try {
+    if (fs.existsSync(tmpMessagesFilePath)) {
+      return JSON.parse(fs.readFileSync(tmpMessagesFilePath, 'utf8'));
+    }
+  } catch (error) {
+    console.warn('Could not read temporary messages file:', error.message);
+  }
   try {
     const fileData = fs.readFileSync(dataFilePath, 'utf8');
     return JSON.parse(fileData);
@@ -26,9 +35,17 @@ const readData = () => {
   }
 };
 
-// Helper to write data
+// Helper to write data (falls back to /tmp when running on read-only serverless filesystem)
 const writeData = data => {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
+  try {
+    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
+  } catch (err) {
+    if (err.code === 'EROFS' || process.env.VERCEL) {
+      fs.writeFileSync(tmpMessagesFilePath, JSON.stringify(data, null, 2), 'utf8');
+      return;
+    }
+    throw err;
+  }
 };
 
 /**

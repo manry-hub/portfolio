@@ -119,9 +119,20 @@ export default function Projects({ allProjects }) {
 }
 
 export async function getServerSideProps() {
-  const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
-  const fileData = fs.readFileSync(dataFilePath, 'utf8');
-  const parsedData = JSON.parse(fileData);
+  const tmpProjectsPath = path.join('/tmp', 'projects.json');
+  let parsedData = null;
+  try {
+    if (fs.existsSync(tmpProjectsPath)) {
+      parsedData = JSON.parse(fs.readFileSync(tmpProjectsPath, 'utf8'));
+    }
+  } catch (error) {
+    console.warn('Could not read temporary projects in catalog:', error.message);
+  }
+  if (!parsedData) {
+    const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
+    const fileData = fs.readFileSync(dataFilePath, 'utf8');
+    parsedData = JSON.parse(fileData);
+  }
 
   // Combine both web and mobile projects into a single flat array
   const allProjects = [...(parsedData.web || []), ...(parsedData.mobile || [])];

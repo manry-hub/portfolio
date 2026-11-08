@@ -68,21 +68,33 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: 'File content does not match declared type' });
     }
 
-    // Ensure public/uploads directory exists
+    let fileUrl = null;
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
+
+    try {
+      // Ensure public/uploads directory exists (works in local environment)
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      // Use unpredictable filename
+      const uniqueId = crypto.randomUUID();
+      const ext = mimeType === 'image/jpeg' || mimeType === 'image/jpg' ? 'jpg' : mimeType.split('/')[1];
+      const filename = `${uniqueId}.${ext}`;
+      const filePath = path.join(uploadsDir, filename);
+
+      fs.writeFileSync(filePath, imageBuffer);
+      fileUrl = `/uploads/${filename}`;
+    } catch (fsErr) {
+      // Vercel / serverless environments have a read-only filesystem (EROFS).
+      // Fall back to serving the validated Base64 Data URI directly so uploads succeed everywhere.
+      if (fsErr.code === 'EROFS' || process.env.VERCEL) {
+        console.warn('Read-only filesystem detected (Vercel). Using Base64 Data URI fallback.');
+        fileUrl = imageBase64;
+      } else {
+        throw fsErr;
+      }
     }
-
-    // Use unpredictable filename
-    const uniqueId = crypto.randomUUID();
-    const ext = mimeType === 'image/jpeg' || mimeType === 'image/jpg' ? 'jpg' : mimeType.split('/')[1];
-    const filename = `${uniqueId}.${ext}`;
-    const filePath = path.join(uploadsDir, filename);
-
-    fs.writeFileSync(filePath, imageBuffer);
-
-    const fileUrl = `/uploads/${filename}`;
 
     return res.status(200).json({ success: true, url: fileUrl });
   } catch (error) {
