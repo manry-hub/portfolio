@@ -11,6 +11,19 @@ import { useState } from 'react';
 import { parseCookies, verifyToken } from 'utils/auth';
 import styles from './dashboard.module.css';
 
+const createDefaultForm = () => ({
+  id: '',
+  title: '',
+  description: '',
+  buttonText: 'View Project',
+  buttonLink: '',
+  category: 'web',
+  type: 'laptop',
+  alt: 'Project screenshot',
+  textures: [{ src: '', placeholder: '' }],
+  showOnHome: true,
+});
+
 export default function Dashboard({ user, initialProjects, initialMessages = [] }) {
   const router = useRouter();
   const [projectsData, setProjectsData] = useState(initialProjects);
@@ -19,21 +32,10 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
   const [isEditing, setIsEditing] = useState(false);
   const [editingCategory, setEditingCategory] = useState('');
   const [uploadingIndex, setUploadingIndex] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
-  const defaultForm = {
-    id: '',
-    title: '',
-    description: '',
-    buttonText: 'View Project',
-    buttonLink: '',
-    category: 'web',
-    type: 'laptop',
-    alt: 'Project screenshot',
-    textures: [{ src: '', placeholder: '' }],
-    showOnHome: true,
-  };
-
-  const [formData, setFormData] = useState(defaultForm);
+  const [formData, setFormData] = useState(createDefaultForm);
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -114,51 +116,74 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setFormError('');
+    setSubmitting(true);
 
-    const payload = {
-      project: {
-        id: formData.id,
-        title: formData.title,
-        description: formData.description,
-        buttonText: formData.buttonText,
-        buttonLink: formData.buttonLink,
-        showOnHome: formData.showOnHome,
-        model: {
-          type: formData.type,
-          alt: formData.alt,
-          textures: formData.textures,
+    try {
+      const payload = {
+        project: {
+          id: formData.id,
+          title: formData.title,
+          description: formData.description,
+          buttonText: formData.buttonText,
+          buttonLink: formData.buttonLink,
+          showOnHome: formData.showOnHome,
+          model: {
+            type: formData.type,
+            alt: formData.alt,
+            textures: formData.textures,
+          },
         },
-      },
-    };
+      };
 
-    if (isEditing) {
-      payload.oldCategory = editingCategory;
-      payload.newCategory = formData.category;
+      let res;
+      if (isEditing) {
+        payload.oldCategory = editingCategory;
+        payload.newCategory = formData.category;
 
-      await fetch('/api/projects', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } else {
-      payload.category = formData.category;
+        res = await fetch('/api/projects', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } else {
+        payload.category = formData.category;
 
-      await fetch('/api/projects', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+        res = await fetch('/api/projects', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      }
+
+      const resData = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const errorMsg = resData.message || 'Failed to save project';
+        setFormError(errorMsg);
+        alert(errorMsg);
+        return;
+      }
+
+      setIsFormOpen(false);
+      setIsEditing(false);
+      setEditingCategory('');
+      setFormData(createDefaultForm());
+      await refreshData();
+    } catch (err) {
+      console.error('Submit error:', err);
+      const errorMsg = 'Network or server error while saving project';
+      setFormError(errorMsg);
+      alert(errorMsg);
+    } finally {
+      setSubmitting(false);
     }
-
-    setIsFormOpen(false);
-    setIsEditing(false);
-    refreshData();
   };
 
   const handleTextureChange = (index, field, value) => {
-    const newTextures = [...formData.textures];
-    newTextures[index][field] = value;
-    setFormData({ ...formData, textures: newTextures });
+    setFormData(prev => ({
+      ...prev,
+      textures: prev.textures.map((t, i) => (i === index ? { ...t, [field]: value } : t)),
+    }));
   };
 
   const handleFileUpload = async (index, event) => {
@@ -168,7 +193,7 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
     setUploadingIndex(index);
 
     try {
-      // 1. Convert to WebP on Client Side
+      // 1. Resize and convert to WebP on Client Side
       const webpBase64 = await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -177,15 +202,29 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
           img.src = e.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
+            const MAX_DIM = 1920;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > MAX_DIM || height > MAX_DIM) {
+              if (width > height) {
+                height = Math.round((height * MAX_DIM) / width);
+                width = MAX_DIM;
+              } else {
+                width = Math.round((width * MAX_DIM) / height);
+                height = MAX_DIM;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-            resolve(canvas.toDataURL('image/webp', 0.8));
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/webp', 0.85));
           };
-          img.onerror = reject;
+          img.onerror = () => reject(new Error('Failed to decode image'));
         };
-        reader.onerror = reject;
+        reader.onerror = () => reject(new Error('Failed to read image file'));
       });
 
       // 2. Upload to Server
@@ -195,14 +234,14 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
         body: JSON.stringify({ imageBase64: webpBase64 }),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
-        const newTextures = [...formData.textures];
-        newTextures[index] = {
-          src: data.url,
-          placeholder: data.url,
-        };
-        setFormData({ ...formData, textures: newTextures });
+        setFormData(prev => ({
+          ...prev,
+          textures: prev.textures.map((t, i) =>
+            i === index ? { src: data.url, placeholder: data.url } : t
+          ),
+        }));
       } else {
         alert(data.message || 'Upload failed');
       }
@@ -215,16 +254,17 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
   };
 
   const addTexture = () => {
-    setFormData({
-      ...formData,
-      textures: [...formData.textures, { src: '', placeholder: '' }],
-    });
+    setFormData(prev => ({
+      ...prev,
+      textures: [...prev.textures, { src: '', placeholder: '' }],
+    }));
   };
 
   const removeTexture = index => {
-    const newTextures = [...formData.textures];
-    newTextures.splice(index, 1);
-    setFormData({ ...formData, textures: newTextures });
+    setFormData(prev => ({
+      ...prev,
+      textures: prev.textures.filter((_, i) => i !== index),
+    }));
   };
 
   return (
@@ -250,8 +290,10 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
           <br />
           <Button
             onClick={() => {
-              setFormData(defaultForm);
+              setFormData(createDefaultForm());
               setIsEditing(false);
+              setEditingCategory('');
+              setFormError('');
               setIsFormOpen(true);
             }}
           >
@@ -366,6 +408,20 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
       ) : (
         <div className={styles.formContainer}>
           <Heading level={3}>{isEditing ? 'Edit Project' : 'Add New Project'}</Heading>
+          {formError && (
+            <div
+              style={{
+                color: '#ff6b6b',
+                background: 'rgba(255, 0, 0, 0.1)',
+                border: '1px solid #ff6b6b',
+                padding: '12px',
+                borderRadius: '4px',
+                margin: '16px 0',
+              }}
+            >
+              {formError}
+            </div>
+          )}
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.formRow}>
               <Input
@@ -416,7 +472,14 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
                 <label style={{ display: 'block', marginBottom: '8px' }}>Category</label>
                 <select
                   value={formData.category}
-                  onChange={e => setFormData({ ...formData, category: e.target.value })}
+                  onChange={e => {
+                    const nextCategory = e.target.value;
+                    setFormData(prev => ({
+                      ...prev,
+                      category: nextCategory,
+                      type: nextCategory === 'mobile' ? 'phone' : 'laptop',
+                    }));
+                  }}
                   style={{
                     width: '100%',
                     padding: '12px',
@@ -538,8 +601,20 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
             </div>
 
             <div className={styles.formActions}>
-              <Button type="submit">Save Project</Button>
-              <Button type="button" secondary onClick={() => setIsFormOpen(false)}>
+              <Button type="submit" disabled={submitting}>
+                {submitting ? 'Saving...' : 'Save Project'}
+              </Button>
+              <Button
+                type="button"
+                secondary
+                onClick={() => {
+                  setIsFormOpen(false);
+                  setIsEditing(false);
+                  setEditingCategory('');
+                  setFormError('');
+                  setFormData(createDefaultForm());
+                }}
+              >
                 Cancel
               </Button>
             </div>

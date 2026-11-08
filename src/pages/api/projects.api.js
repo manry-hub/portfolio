@@ -88,8 +88,9 @@ function sanitizeProject(raw) {
     model = { type: modelType, alt: modelAlt, textures };
   }
 
+  const cleanId = raw.id ? String(raw.id).trim().slice(0, 50) : '';
   const project = {
-    id: raw.id ? String(raw.id).trim().slice(0, 50) : `project-${Date.now()}`,
+    id: cleanId.length > 0 ? cleanId : `project-${Date.now()}`,
     title,
     description,
     buttonText,

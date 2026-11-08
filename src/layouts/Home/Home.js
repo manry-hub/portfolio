@@ -33,13 +33,15 @@ const imageMap = {
 };
 
 const getProjectData = project => {
+  if (!project) return {};
+  const textures = project.model?.textures || [];
   return {
     ...project,
     model: {
       ...project.model,
-      textures: project.model.textures.map(texture => {
-        const srcObj = imageMap[texture.src] || { src: texture.src, width: 1920, height: 1080 };
-        const placeholderObj = imageMap[texture.placeholder] || { src: texture.placeholder, width: 1920, height: 1080 };
+      textures: (textures.length > 0 ? textures : [{ src: '', placeholder: '' }]).map(texture => {
+        const srcObj = imageMap[texture?.src] || { src: texture?.src || '', width: 1920, height: 1080 };
+        const placeholderObj = imageMap[texture?.placeholder] || { src: texture?.placeholder || '', width: 1920, height: 1080 };
         return {
           srcSet: [srcObj],
           placeholder: placeholderObj,

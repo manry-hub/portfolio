@@ -124,7 +124,7 @@ export const ProjectSummary = ({
                 {
                   ...deviceModels.laptop,
                   texture: {
-                    ...model.textures[0],
+                    ...(model.textures?.[0] || {}),
                     sizes: laptopSizes,
                   },
                 },
@@ -148,7 +148,7 @@ export const ProjectSummary = ({
                   ...deviceModels.phone,
                   position: { x: -0.6, y: 1.1, z: 0 },
                   texture: {
-                    ...model.textures[0],
+                    ...(model.textures?.[0] || {}),
                     sizes: phoneSizes,
                   },
                 },
@@ -156,7 +156,7 @@ export const ProjectSummary = ({
                   ...deviceModels.phone,
                   position: { x: 0.6, y: -0.5, z: 0.3 },
                   texture: {
-                    ...model.textures[1],
+                    ...(model.textures?.[1] || model.textures?.[0] || {}),
                     sizes: phoneSizes,
                   },
                 },
