@@ -1,7 +1,7 @@
 module.exports = {
+  swcMinify: true,
   images: {
-    loader: 'akamai',
-    path: '',
+    unoptimized: true,
   },
   reactStrictMode: true,
   trailingSlash: true,
