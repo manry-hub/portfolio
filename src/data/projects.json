@@ -1,59 +1,6 @@
 {
   "web": [
     {
-      "id": "project-3",
-      "title": "Article Website",
-      "description": "Improve the UI and UX appearance of the old Organization website and develop it regularly",
-      "buttonText": "View Project",
-      "buttonLink": "https://himasis.org/",
-      "model": {
-        "type": "laptop",
-        "alt": "landing page",
-        "textures": [
-          {
-            "src": "himasisLarge",
-            "placeholder": "gamestackTexturePlaceholder"
-          }
-        ]
-      }
-    },
-    {
-      "id": "project-5",
-      "title": "Landing Page & SEO Optimization",
-      "description": "Build a fast, modern, and SEO-optimized company profile landing page using Astro JS for better performance.",
-      "buttonText": "View Website",
-      "buttonLink": "https://omahkopi78.com",
-      "showOnHome": true,
-      "model": {
-        "type": "laptop",
-        "alt": "landing page",
-        "textures": [
-          {
-            "src": "omahkopiLarge",
-            "placeholder": "gamestackTexturePlaceholder"
-          }
-        ]
-      }
-    },
-    {
-      "id": "project-1",
-      "title": "hacktiv8 course path",
-      "description": "Build a platform to help customer make a decission for buying course in hacktiv8 with AI Assistence from IBM Granite",
-      "buttonText": "View project",
-      "buttonLink": "https://github.com/manry-hub/Tracktiv8",
-      "showOnHome": true,
-      "model": {
-        "type": "laptop",
-        "alt": "Displaying the home page of the website.",
-        "textures": [
-          {
-            "src": "tracktivLarge",
-            "placeholder": "sprTexturePlaceholder"
-          }
-        ]
-      }
-    },
-    {
       "id": "project-1794152419023",
       "title": "Manufacturing Execution System",
       "description": "Unified Manufacturing Execution System (MES) platform built for discrete injection molding manufacturing",
@@ -71,6 +18,64 @@
           {
             "src": "/uploads/fb77338b-272d-4257-844c-50c1cd8895fc.webp",
             "placeholder": "/uploads/fb77338b-272d-4257-844c-50c1cd8895fc.webp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "project-1794154393410",
+      "title": "Warehouse Management System",
+      "description": "Designed specifically for discrete plastic injection molding facilities, it governs raw material logistics (polymers, masterbatch, regrind, additives), staging hoppers, and finished goods",
+      "buttonText": "View Project",
+      "buttonLink": "https://github.com/manry-hub/Warehouse-Management-System",
+      "showOnHome": true,
+      "model": {
+        "type": "laptop",
+        "alt": "Project screenshot",
+        "textures": [
+          {
+            "src": "/uploads/b142a562-4f17-4153-8e78-0133bb13b10f.webp",
+            "placeholder": "/uploads/b142a562-4f17-4153-8e78-0133bb13b10f.webp"
+          },
+          {
+            "src": "/uploads/bd9a440e-7400-42c1-8022-51ade836faec.webp",
+            "placeholder": "/uploads/bd9a440e-7400-42c1-8022-51ade836faec.webp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "project-1794154915564",
+      "title": "Migration & Optimization",
+      "description": "Aligning the technology stack with the capabilities of the campus physical server infrastructure to enhance resource utilization efficiency and server security.",
+      "buttonText": "View Website",
+      "buttonLink": "https://stmi.ac.id/",
+      "showOnHome": true,
+      "model": {
+        "type": "laptop",
+        "alt": "Project screenshot",
+        "textures": [
+          {
+            "src": "/uploads/4d652ca8-fc53-4a19-8aaf-f6a18905c9b3.webp",
+            "placeholder": "/uploads/4d652ca8-fc53-4a19-8aaf-f6a18905c9b3.webp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "project-1794154653011",
+      "title": "Quality Management System",
+      "description": "Enterprise quality governance, metrology, and compliance platform engineered specifically for precision automotive plastic injection molding plants. It orchestrates the full quality lifecycle from APQP quality planning, iIQC, and IPQC to NCR, MRB, 8D CAPA, and 21 CFR Part 11 cryptographic audit trails.",
+      "buttonText": "View Project",
+      "buttonLink": "https://github.com/manry-hub/Quality-Management-System",
+      "showOnHome": true,
+      "model": {
+        "type": "laptop",
+        "alt": "Project screenshot",
+        "textures": [
+          {
+            "src": "/uploads/99aeffc2-9f91-4acb-a185-cb75013bd3d4.webp",
+            "placeholder": "/uploads/99aeffc2-9f91-4acb-a185-cb75013bd3d4.webp"
           }
         ]
       }
