@@ -202,7 +202,7 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
           img.src = e.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            const MAX_DIM = 1920;
+            const MAX_DIM = 1440;
             let width = img.width;
             let height = img.height;
 
@@ -220,7 +220,7 @@ export default function Dashboard({ user, initialProjects, initialMessages = [] 
             canvas.height = height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL('image/webp', 0.85));
+            resolve(canvas.toDataURL('image/webp', 0.8));
           };
           img.onerror = () => reject(new Error('Failed to decode image'));
         };

@@ -2,6 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { parseCookies, verifyToken } from 'utils/auth';
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
 const dataFilePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
 
 // Helper to authenticate
@@ -33,11 +41,14 @@ const writeData = data => {
   try {
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
   } catch (err) {
-    if (err.code === 'EROFS' || process.env.VERCEL) {
+    // If writing to projects.json fails (e.g. EROFS on Vercel/serverless), fallback to /tmp
+    try {
       fs.writeFileSync(tmpDataFilePath, JSON.stringify(data, null, 2), 'utf8');
       return;
+    } catch (tmpErr) {
+      console.error('Failed to write to temporary file:', tmpErr.message);
+      throw tmpErr;
     }
-    throw err;
   }
 };
 
@@ -96,10 +107,17 @@ function sanitizeProject(raw) {
 
     let textures = [{ src: '', placeholder: '' }];
     if (Array.isArray(raw.model.textures)) {
-      textures = raw.model.textures.slice(0, 5).map(t => ({
-        src: String(t?.src || '').trim().slice(0, 500),
-        placeholder: String(t?.placeholder || '').trim().slice(0, 500),
-      }));
+      textures = raw.model.textures.slice(0, 5).map(t => {
+        const rawSrc = String(t?.src || '').trim();
+        const rawPlaceholder = String(t?.placeholder || '').trim();
+        // Allow up to 5MB for Data URIs, 500 chars for regular filenames/URLs
+        const maxSrcLen = rawSrc.startsWith('data:image/') ? 5 * 1024 * 1024 : 500;
+        const maxPlaceholderLen = rawPlaceholder.startsWith('data:image/') ? 5 * 1024 * 1024 : 500;
+        return {
+          src: rawSrc.slice(0, maxSrcLen),
+          placeholder: rawPlaceholder.slice(0, maxPlaceholderLen),
+        };
+      });
     }
 
     model = { type: modelType, alt: modelAlt, textures };

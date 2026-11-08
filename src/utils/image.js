@@ -77,6 +77,10 @@ export async function generateImage(width = 1, height = 1) {
  * Use native html image `srcSet` resolution for non-html images
  */
 export async function resolveSrcFromSrcSet({ srcSet, sizes }) {
+  if (Array.isArray(srcSet) && srcSet.length === 1 && srcSet[0]?.src) {
+    return srcSet[0].src;
+  }
+
   const stringSrcSet = srcSetToString(srcSet);
 
   const sources = await Promise.all(
@@ -92,5 +96,5 @@ export async function resolveSrcFromSrcSet({ srcSet, sizes }) {
   const fakeSrc = await loadImageFromSrcSet({ srcSet: fakeSrcSet, sizes });
 
   const output = sources.find(src => src.image === fakeSrc);
-  return output.src;
+  return output?.src || sources[0]?.src || (Array.isArray(srcSet) ? srcSet[0]?.src : '') || '';
 }

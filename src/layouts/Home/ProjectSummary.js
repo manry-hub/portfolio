@@ -127,6 +127,13 @@ export const ProjectSummary = ({
                     ...(model.textures?.[0] || {}),
                     sizes: laptopSizes,
                   },
+                  textures: (model.textures && model.textures.length > 0
+                    ? model.textures
+                    : [{ src: '', placeholder: '' }]
+                  ).map(t => ({
+                    ...t,
+                    sizes: laptopSizes,
+                  })),
                 },
               ]}
             />

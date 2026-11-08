@@ -1,7 +1,6 @@
 import { animate, useReducedMotion, useSpring } from 'framer-motion';
 import { useInViewport } from 'hooks';
 import {
-  createRef,
   startTransition,
   useCallback,
   useEffect,
@@ -347,6 +346,7 @@ export const Model = ({
           index={index}
           setLoaded={setLoaded}
           model={model}
+          isInViewport={isInViewport}
         />
       ))}
     </div>
@@ -362,13 +362,21 @@ const Device = ({
   showDelay,
   setLoaded,
   show,
+  isInViewport = true,
 }) => {
   const [loadDevice, setLoadDevice] = useState();
   const reduceMotion = useReducedMotion();
-  const placeholderScreen = createRef();
+  const placeholderScreen = useRef();
+  const screenNode = useRef();
+  const isInViewportRef = useRef(isInViewport);
+
+  useEffect(() => {
+    isInViewportRef.current = isInViewport;
+  }, [isInViewport]);
 
   useEffect(() => {
     const applyScreenTexture = async (texture, node) => {
+      if (!texture || !node) return;
       texture.encoding = sRGBEncoding;
       texture.flipY = false;
       texture.anisotropy = renderer.current.capabilities.getMaxAnisotropy();
@@ -384,48 +392,97 @@ const Device = ({
 
     // Generate promises to await when ready
     const load = async () => {
-      const { texture, position, url } = model;
+      const { texture, textures, position, url } = model;
       let loadFullResTexture;
       let playAnimation;
 
       const [placeholder, gltf] = await Promise.all([
-        await textureLoader.loadAsync(texture.placeholder.src),
-        await modelLoader.loadAsync(url),
+        texture?.placeholder?.src
+          ? textureLoader.loadAsync(texture.placeholder.src).catch(() => null)
+          : Promise.resolve(null),
+        modelLoader.loadAsync(url),
       ]);
 
       modelGroup.current.add(gltf.scene);
 
-      gltf.scene.traverse(async node => {
+      let targetScreenNode = null;
+      gltf.scene.traverse(node => {
         if (node.material) {
           node.material.color = new Color(0x1f2025);
           node.material.color.convertSRGBToLinear();
         }
 
         if (node.name === MeshType.Screen) {
+          targetScreenNode = node;
+          screenNode.current = node;
+
           // Create a copy of the screen mesh so we can fade it out
-          // over the full resolution screen texture
+          // over the full resolution screen texture and use for slideshow crossfades
           placeholderScreen.current = node.clone();
           placeholderScreen.current.material = node.material.clone();
           node.parent.add(placeholderScreen.current);
           placeholderScreen.current.material.opacity = 1;
+          placeholderScreen.current.material.transparent = true;
+          placeholderScreen.current.material.depthWrite = false;
           placeholderScreen.current.position.z += 0.001;
-
-          applyScreenTexture(placeholder, placeholderScreen.current);
-
-          loadFullResTexture = async () => {
-            const image = await resolveSrcFromSrcSet(texture);
-            const fullSize = await textureLoader.loadAsync(image);
-            await applyScreenTexture(fullSize, node);
-
-            animate(1, 0, {
-              onUpdate: value => {
-                placeholderScreen.current.material.opacity = value;
-                renderFrame();
-              },
-            });
-          };
         }
       });
+
+      if (placeholder && placeholderScreen.current) {
+        applyScreenTexture(placeholder, placeholderScreen.current);
+      }
+
+      loadFullResTexture = async () => {
+        if (!targetScreenNode) return [];
+
+        const textureList =
+          textures && textures.length > 0 ? textures : texture ? [texture] : [];
+
+        let loadedTextures = [];
+        if (textureList.length > 0) {
+          const loaded = await Promise.all(
+            textureList.map(async t => {
+              try {
+                const image = await resolveSrcFromSrcSet(t);
+                if (!image) return null;
+                const fullSize = await textureLoader.loadAsync(image);
+                fullSize.encoding = sRGBEncoding;
+                fullSize.flipY = false;
+                fullSize.anisotropy = renderer.current.capabilities.getMaxAnisotropy();
+                fullSize.generateMipmaps = false;
+                await renderer.current.initTexture(fullSize);
+                return fullSize;
+              } catch (e) {
+                console.warn('Failed to load texture for model:', e);
+                return null;
+              }
+            })
+          );
+          loadedTextures = loaded.filter(Boolean);
+        }
+
+        if (loadedTextures.length > 0 && targetScreenNode) {
+          await applyScreenTexture(loadedTextures[0], targetScreenNode);
+        }
+
+        animate(1, 0, {
+          duration: 0.5,
+          onUpdate: value => {
+            if (placeholderScreen.current) {
+              placeholderScreen.current.material.opacity = value;
+              renderFrame();
+            }
+          },
+          onComplete: () => {
+            if (placeholderScreen.current) {
+              placeholderScreen.current.material.opacity = 0;
+              renderFrame();
+            }
+          },
+        });
+
+        return loadedTextures;
+      };
 
       const targetPosition = new Vector3(position.x, position.y, position.z);
 
@@ -498,20 +555,81 @@ const Device = ({
   useEffect(() => {
     if (!loadDevice || !show) return;
     let animation;
+    let slideshowTimer;
+    let transitionAnim;
+    let active = true;
 
     const onLoad = async () => {
       const { loadFullResTexture, playAnimation } = await loadDevice.start();
 
       setLoaded(true);
 
-      if (!reduceMotion) {
+      if (!reduceMotion && playAnimation) {
         animation = playAnimation();
       }
 
-      await loadFullResTexture();
+      let loadedTextures = [];
+      if (loadFullResTexture) {
+        loadedTextures = await loadFullResTexture();
+      }
 
       if (reduceMotion) {
         renderFrame();
+      }
+
+      // Auto-slideshow crossfade if there are multiple textures
+      if (active && loadedTextures && loadedTextures.length > 1 && !reduceMotion) {
+        let currentTextureIndex = 0;
+
+        const scheduleNext = () => {
+          slideshowTimer = setTimeout(() => {
+            if (!active) return;
+
+            // If not in viewport or tab is hidden, wait and check again without animating
+            if (
+              !isInViewportRef.current ||
+              (typeof document !== 'undefined' && document.hidden)
+            ) {
+              scheduleNext();
+              return;
+            }
+
+            const nextIndex = (currentTextureIndex + 1) % loadedTextures.length;
+            const nextTexture = loadedTextures[nextIndex];
+
+            if (placeholderScreen.current && screenNode.current) {
+              placeholderScreen.current.material.map = nextTexture;
+              placeholderScreen.current.material.opacity = 0;
+              placeholderScreen.current.material.needsUpdate = true;
+
+              transitionAnim = animate(0, 1, {
+                duration: 0.8,
+                ease: 'easeInOut',
+                onUpdate: value => {
+                  if (placeholderScreen.current && active) {
+                    placeholderScreen.current.material.opacity = value;
+                    renderFrame();
+                  }
+                },
+                onComplete: () => {
+                  if (!active) return;
+                  if (screenNode.current) {
+                    screenNode.current.material.map = nextTexture;
+                    screenNode.current.material.needsUpdate = true;
+                  }
+                  if (placeholderScreen.current) {
+                    placeholderScreen.current.material.opacity = 0;
+                  }
+                  renderFrame();
+                  currentTextureIndex = nextIndex;
+                  scheduleNext();
+                },
+              });
+            }
+          }, 4500);
+        };
+
+        scheduleNext();
       }
     };
 
@@ -520,7 +638,12 @@ const Device = ({
     });
 
     return () => {
+      active = false;
       animation?.stop();
+      transitionAnim?.stop();
+      if (slideshowTimer) {
+        clearTimeout(slideshowTimer);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadDevice, show]);

@@ -6,13 +6,13 @@ import { parseCookies, verifyToken } from 'utils/auth';
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '3mb', // Reduced from 10mb
+      sizeLimit: '10mb',
     },
   },
 };
 
 const ALLOWED_MIME_TYPES = ['image/webp', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
-const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
 const isAuthenticated = req => {
   const cookies = parseCookies(req.headers.cookie);
@@ -86,14 +86,9 @@ export default async function handler(req, res) {
       fs.writeFileSync(filePath, imageBuffer);
       fileUrl = `/uploads/${filename}`;
     } catch (fsErr) {
-      // Vercel / serverless environments have a read-only filesystem (EROFS).
-      // Fall back to serving the validated Base64 Data URI directly so uploads succeed everywhere.
-      if (fsErr.code === 'EROFS' || process.env.VERCEL) {
-        console.warn('Read-only filesystem detected (Vercel). Using Base64 Data URI fallback.');
-        fileUrl = imageBase64;
-      } else {
-        throw fsErr;
-      }
+      // On serverless / read-only filesystem (Vercel), fall back to serving the validated Base64 Data URI directly
+      console.warn('Filesystem write not permitted, falling back to Base64 Data URI:', fsErr.message);
+      fileUrl = imageBase64;
     }
 
     return res.status(200).json({ success: true, url: fileUrl });

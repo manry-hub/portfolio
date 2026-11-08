@@ -52,6 +52,28 @@
           }
         ]
       }
+    },
+    {
+      "id": "project-1794152419023",
+      "title": "Manufacturing Execution System",
+      "description": "Unified Manufacturing Execution System (MES) platform built for discrete injection molding manufacturing",
+      "buttonText": "View Project",
+      "buttonLink": "https://github.com/manry-hub/Manufacturing-Execution-System",
+      "showOnHome": true,
+      "model": {
+        "type": "laptop",
+        "alt": "Project screenshot",
+        "textures": [
+          {
+            "src": "/uploads/acf543f8-d06c-4ba1-8316-ac27953f926b.webp",
+            "placeholder": "/uploads/acf543f8-d06c-4ba1-8316-ac27953f926b.webp"
+          },
+          {
+            "src": "/uploads/fb77338b-272d-4257-844c-50c1cd8895fc.webp",
+            "placeholder": "/uploads/fb77338b-272d-4257-844c-50c1cd8895fc.webp"
+          }
+        ]
+      }
     }
   ],
   "mobile": [
